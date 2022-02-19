@@ -7,8 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateColorRequest {
+public class CreateCarRequest {
+
+	private double dailyPrice;
+	private int modelYear;
+	private String description;	
+	private int brandId;	
+	private int colorId;
 	
-		private String colorName;	
-		
 }
