@@ -14,6 +14,10 @@ import com.turkcell.rentacar.business.requests.DeleteCarRequest;
 import com.turkcell.rentacar.business.requests.UpdateCarRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.abstracts.ModelMapperService;
+import com.turkcell.rentacar.core.utilities.results.DataResult;
+import com.turkcell.rentacar.core.utilities.results.Result;
+import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
+import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.CarDao;
 import com.turkcell.rentacar.entites.concretes.Car;
 
@@ -31,38 +35,40 @@ public class CarManager implements CarService{
 	}
 	
 	@Override
-	public List<ListCarDto> getall() {
+	public DataResult<List<ListCarDto>> getall() {
 		var result = this.carDao.findAll();
 		List<ListCarDto> response = result.stream().map(car->this.modelMapperService.forDto()
 									.map(car, ListCarDto.class)).collect(Collectors.toList());
-		return response;
+		return new SuccessDataResult<List<ListCarDto>>(response, "Data Listelendi");
 	}
 
 	@Override
-	public void add(CreateCarRequest createCarRequest) throws BusinessException {
+	public Result add(CreateCarRequest createCarRequest) throws BusinessException {
 		Car car = this.modelMapperService.forRequest().map(createCarRequest, Car.class);
 		this.carDao.save(car);
+		return new SuccessResult(car.getDescription()+"isimli Araç Eklendi.");
 		
 	}
 
 	@Override
-	public GetCarDto getByCarId(int carId) {
+	public DataResult<GetCarDto> getByCarId(int carId) {
 		Car result = this.carDao.getByCarId(carId);
 		GetCarDto response = this.modelMapperService.forDto().map(result, GetCarDto.class);
-		return response;
+		return new SuccessDataResult<GetCarDto>(response, "Id'si "+carId+" olan araç getirildi.");
 	}
 
 	@Override
-	public void update(UpdateCarRequest carRequest) {
-		Car car = this.modelMapperService.forRequest().map(carRequest, Car.class);
-		this.carDao.save(car);
-		
+	public Result update(UpdateCarRequest updateCarRequest) {
+		Car car = this.modelMapperService.forRequest().map(updateCarRequest, Car.class);
+		 this.carDao.save(car);
+		 return new SuccessResult(updateCarRequest.getCarId()+" 'li araç veri tabanında güncellendi.");
 	}
 
 	@Override
-	public void delete(DeleteCarRequest deleteCarRequest) {
+	public Result delete(DeleteCarRequest deleteCarRequest) {
 		Car car = this.modelMapperService.forRequest().map(deleteCarRequest, Car.class);
 		this.carDao.delete(car);
+		return new SuccessResult();
 		
 	}
 

@@ -8,13 +8,15 @@ import com.turkcell.rentacar.business.requests.CreateColorRequest;
 import com.turkcell.rentacar.business.requests.DeleteColorRequest;
 import com.turkcell.rentacar.business.requests.UpdateColorRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.utilities.results.DataResult;
+import com.turkcell.rentacar.core.utilities.results.Result;
 
 public interface ColorService {
 	
-	List<ListColorDto> getall();
-	void add(CreateColorRequest createColorRequest) throws BusinessException;
-	GetColorDto getById(int colorId);
-	void update(UpdateColorRequest updateColorRequest);
-	void delete(DeleteColorRequest deleteColorRequest);
+	DataResult<List<ListColorDto>> getall() throws BusinessException;
+	Result add(CreateColorRequest createColorRequest) throws BusinessException;
+	DataResult<GetColorDto> getById(int colorId) throws BusinessException;
+	Result update(UpdateColorRequest updateColorRequest) throws BusinessException;
+	Result delete(DeleteColorRequest deleteColorRequest) throws BusinessException;
 	
 }

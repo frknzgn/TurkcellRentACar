@@ -19,6 +19,11 @@ import com.turkcell.rentacar.business.requests.CreateCarRequest;
 import com.turkcell.rentacar.business.requests.DeleteCarRequest;
 import com.turkcell.rentacar.business.requests.UpdateCarRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.utilities.results.DataResult;
+import com.turkcell.rentacar.core.utilities.results.ErrorDataResult;
+import com.turkcell.rentacar.core.utilities.results.ErrorResult;
+import com.turkcell.rentacar.core.utilities.results.Result;
+import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 
 @RestController
 @RequestMapping("/api/cars")
@@ -31,30 +36,54 @@ public class CarController {
 	}
 	
 	@GetMapping("/getall")
-	public List<ListCarDto> getall(){
-		return this.carService.getall();
+	public DataResult<List<ListCarDto>> getall(){
+		try {
+			return this.carService.getall();
+		} catch (BusinessException e) {
+			return new ErrorDataResult<List<ListCarDto>>(e.getMessage());
+		}
+		
 	}
 	
 	@GetMapping("/getbyid")
-	public GetCarDto getbyid(@RequestParam int id){
+	public DataResult<GetCarDto> getbyid(@RequestParam int id){
+		try {
+			return this.carService.getByCarId(id);
+		} catch (BusinessException e) {
+			return new ErrorDataResult<GetCarDto>(e.getMessage());
+		}
 		
-		return this.carService.getByCarId(id);
 		
 	}
 	
 	@PostMapping("/add")
-	public void add(@RequestBody CreateCarRequest createCarRequest) throws BusinessException {
-		this.carService.add(createCarRequest);
+	public Result add(@RequestBody CreateCarRequest createCarRequest) throws BusinessException {
+
+		try {
+		return this.carService.add(createCarRequest);
+		} catch (BusinessException e) {
+			return new ErrorResult(e.getMessage());
+		}		
 	}
 	
 	@DeleteMapping("/delete")
-	public void delete(@RequestBody DeleteCarRequest deleteCarRequest) {
-		this.carService.delete(deleteCarRequest);
+	public Result delete(@RequestBody DeleteCarRequest deleteCarRequest) throws BusinessException {
+		try {
+			return this.carService.delete(deleteCarRequest);
+		} catch (BusinessException e) {
+			return new ErrorResult(e.getMessage());
+		}
+		
 	}
 	
 	@PutMapping("/update")
-	public void update(@RequestBody UpdateCarRequest updateCarRequest) throws BusinessException {
-		this.carService.update(updateCarRequest);
+	public Result update(@RequestBody UpdateCarRequest updateCarRequest) throws BusinessException {
+		try {
+			return this.carService.update(updateCarRequest);
+		} catch (BusinessException e) {
+			return new ErrorResult(e.getMessage());
+		}
+		
 	}
 	
 }
