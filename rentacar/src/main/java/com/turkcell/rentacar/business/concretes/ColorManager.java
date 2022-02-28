@@ -49,7 +49,7 @@ public class ColorManager implements ColorService {
 		
 		Color color = this.modelMapperService.forRequest().map(createColorRequest,Color.class);
 		
-		if(checkColorNameExist(color)) {
+		if(checkColorNameExist(color.getColorName())) {
 			this.colorDao.save(color);	
 			return new SuccessResult("Eklendi");
 		}else {
@@ -66,13 +66,17 @@ public class ColorManager implements ColorService {
 		return new SuccessDataResult<GetColorDto>(response, "Id ye göre renk getirildi.");
 	}
 	
-	private boolean checkColorNameExist(Color color){
+	private boolean checkColorNameExist(String colorName){
 			
-			if(this.colorDao.existsById(color.getColorId())) {
+		List<Color> colors = this.colorDao.findAll();
+		
+		for (Color color : colors) {
+			if(color.getColorName().toLowerCase()==colorName.toLowerCase()) {
 				return false;
 			}
-			return true;
 		}
+		return false;
+	}
 
 	@Override
 	public Result update(UpdateColorRequest updateColorRequest) {

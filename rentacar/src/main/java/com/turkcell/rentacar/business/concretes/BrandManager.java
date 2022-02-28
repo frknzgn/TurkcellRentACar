@@ -21,6 +21,7 @@ import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.BrandDao;
 import com.turkcell.rentacar.entites.concretes.Brand;
+import com.turkcell.rentacar.entites.concretes.Color;
 
 @Service
 public class BrandManager implements BrandService{
@@ -50,9 +51,14 @@ public class BrandManager implements BrandService{
 		
 		Brand brand = this.modelMapperService.forRequest().map(createBrandRequest,Brand.class);
 		
-		//checkBrandNameExist(createBrandRequest.getBrandName());
-		this.brandDao.save(brand);
-		return new SuccessResult("Marka veritabanına eklendi.");
+		if(checkBrandNameExist(brand.getBrandName())){
+			this.brandDao.save(brand);
+			return new SuccessResult("Marka veritabanına eklendi.");
+		}else {
+			return new ErrorResult("Marka mevcut ekleyemem.");
+		}
+		
+		
 		
 	}
 
@@ -98,5 +104,17 @@ public class BrandManager implements BrandService{
 			throw new BusinessException("This Id is empty");
 		}
 		return true;
+	}
+	
+	private boolean checkBrandNameExist(String brandName){
+		
+		List<Brand> brands = this.brandDao.findAll();
+		
+		for (Brand brand : brands) {
+			if(brand.getBrandName().toLowerCase()==brandName.toLowerCase()) {
+				return false;
+			}
+		}
+		return false;
 	}
 }

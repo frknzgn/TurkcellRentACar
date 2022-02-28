@@ -1,13 +1,18 @@
 package com.turkcell.rentacar.business.concretes;
 
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.dtos.GetCarDto;
+import com.turkcell.rentacar.business.dtos.ListCarByDailyPriceDto;
 import com.turkcell.rentacar.business.dtos.ListCarDto;
 import com.turkcell.rentacar.business.requests.CreateCarRequest;
 import com.turkcell.rentacar.business.requests.DeleteCarRequest;
@@ -20,6 +25,7 @@ import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.CarDao;
 import com.turkcell.rentacar.entites.concretes.Car;
+
 
 
 @Service
@@ -35,7 +41,7 @@ public class CarManager implements CarService{
 	}
 	
 	@Override
-	public DataResult<List<ListCarDto>> getall() {
+	public DataResult<List<ListCarDto>> getAll() {
 		var result = this.carDao.findAll();
 		List<ListCarDto> response = result.stream().map(car->this.modelMapperService.forDto()
 									.map(car, ListCarDto.class)).collect(Collectors.toList());
@@ -68,8 +74,47 @@ public class CarManager implements CarService{
 	public Result delete(DeleteCarRequest deleteCarRequest) {
 		Car car = this.modelMapperService.forRequest().map(deleteCarRequest, Car.class);
 		this.carDao.delete(car);
-		return new SuccessResult();
+		return new SuccessResult(car.getDescription()+" silindi.");
 		
 	}
+
+	@Override
+	public DataResult<List<ListCarDto>> getAllPaged(int pageNumber, int pageSize) {
+		
+		Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
+		var result = this.carDao.findAll(pageable).getContent();
+		List<ListCarDto> response = result.stream().map(car->this.modelMapperService.forDto()
+									.map(car, ListCarDto.class)).collect(Collectors.toList());
+		return new SuccessDataResult<List<ListCarDto>>(response, "Data Listelendi");
+	}
+
+	@Override
+	public DataResult<List<ListCarDto>> getAllSorted(Sort.Direction direction) throws BusinessException {
+		
+		Sort sort = Sort.by(direction,"dailyPrice");
+		
+		var result = this.carDao.findAll(sort);
+		List<ListCarDto> response = result.stream().map(car->this.modelMapperService.forDto()
+									.map(car, ListCarDto.class)).collect(Collectors.toList());
+		return new SuccessDataResult<List<ListCarDto>>(response, "Data Listelendi");
+	}
+
+	@Override
+	public DataResult<List<ListCarByDailyPriceDto>> getCarByDailyPriceLessThanEqual(double dailyPrice) throws BusinessException {
+		
+		var result = this.carDao.getCarByDailyPriceLessThanEqual(dailyPrice);
+		
+		List<ListCarByDailyPriceDto> response = result.stream().map(car->this.modelMapperService.forDto()
+									.map(car, ListCarByDailyPriceDto.class)).collect(Collectors.toList());
+		
+		return new SuccessDataResult<List<ListCarByDailyPriceDto>>(response, "Data Listelendi");
+	}
+
+	
+	
+
+
+	
+
 
 }

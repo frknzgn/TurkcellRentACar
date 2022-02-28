@@ -11,4 +11,5 @@ public interface ColorDao extends JpaRepository<Color, Integer> {
 	Color getByColorId(int colorId);
 	
 	Color getByColorName(String colorName);
+	
 }
