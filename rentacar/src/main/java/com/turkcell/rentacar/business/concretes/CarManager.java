@@ -11,12 +11,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CarService;
-import com.turkcell.rentacar.business.dtos.GetCarDto;
-import com.turkcell.rentacar.business.dtos.ListCarByDailyPriceDto;
-import com.turkcell.rentacar.business.dtos.ListCarDto;
-import com.turkcell.rentacar.business.requests.CreateCarRequest;
-import com.turkcell.rentacar.business.requests.DeleteCarRequest;
-import com.turkcell.rentacar.business.requests.UpdateCarRequest;
+import com.turkcell.rentacar.business.dtos.car.GetCarDto;
+import com.turkcell.rentacar.business.dtos.car.ListCarByDailyPriceDto;
+import com.turkcell.rentacar.business.dtos.car.ListCarDto;
+import com.turkcell.rentacar.business.requests.car.CreateCarRequest;
+import com.turkcell.rentacar.business.requests.car.DeleteCarRequest;
+import com.turkcell.rentacar.business.requests.car.UpdateCarRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.abstracts.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;

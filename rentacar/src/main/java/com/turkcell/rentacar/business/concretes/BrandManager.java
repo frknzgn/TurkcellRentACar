@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.BrandService;
-import com.turkcell.rentacar.business.dtos.GetBrandDto;
-import com.turkcell.rentacar.business.dtos.ListBrandDto;
-import com.turkcell.rentacar.business.requests.CreateBrandRequest;
-import com.turkcell.rentacar.business.requests.DeleteBrandRequest;
-import com.turkcell.rentacar.business.requests.UpdateBrandRequest;
+import com.turkcell.rentacar.business.dtos.brand.GetBrandDto;
+import com.turkcell.rentacar.business.dtos.brand.ListBrandDto;
+import com.turkcell.rentacar.business.requests.brand.CreateBrandRequest;
+import com.turkcell.rentacar.business.requests.brand.DeleteBrandRequest;
+import com.turkcell.rentacar.business.requests.brand.UpdateBrandRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.abstracts.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
@@ -21,7 +21,6 @@ import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.BrandDao;
 import com.turkcell.rentacar.entites.concretes.Brand;
-import com.turkcell.rentacar.entites.concretes.Color;
 
 @Service
 public class BrandManager implements BrandService{
@@ -47,7 +46,7 @@ public class BrandManager implements BrandService{
 	}
 
 	@Override
-	public Result add(CreateBrandRequest createBrandRequest) throws BusinessException {
+	public Result add(CreateBrandRequest createBrandRequest) {
 		
 		Brand brand = this.modelMapperService.forRequest().map(createBrandRequest,Brand.class);
 		

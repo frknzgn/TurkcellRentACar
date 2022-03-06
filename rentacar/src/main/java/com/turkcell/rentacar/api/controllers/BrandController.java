@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.turkcell.rentacar.business.abstracts.BrandService;
-import com.turkcell.rentacar.business.dtos.GetBrandDto;
-import com.turkcell.rentacar.business.dtos.ListBrandDto;
-import com.turkcell.rentacar.business.requests.CreateBrandRequest;
-import com.turkcell.rentacar.business.requests.DeleteBrandRequest;
-import com.turkcell.rentacar.business.requests.UpdateBrandRequest;
+import com.turkcell.rentacar.business.dtos.brand.GetBrandDto;
+import com.turkcell.rentacar.business.dtos.brand.ListBrandDto;
+import com.turkcell.rentacar.business.requests.brand.CreateBrandRequest;
+import com.turkcell.rentacar.business.requests.brand.DeleteBrandRequest;
+import com.turkcell.rentacar.business.requests.brand.UpdateBrandRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.ErrorDataResult;
@@ -58,10 +58,10 @@ public class BrandController {
 	}
 	
 	@PostMapping("/add")
-	public Result add(@RequestBody CreateBrandRequest createBrandRequest) throws BusinessException {
+	public Result add(@RequestBody CreateBrandRequest createBrandRequest) {
 		try {
 			return this.brandService.add(createBrandRequest);
-		} catch (BusinessException e) {
+		} catch (Exception e) {
 			return new ErrorResult(e.getMessage());
 		}
 		
