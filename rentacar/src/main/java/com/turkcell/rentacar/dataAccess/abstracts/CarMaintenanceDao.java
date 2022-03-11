@@ -12,4 +12,5 @@ public interface CarMaintenanceDao extends JpaRepository<CarMaintenance,Integer>
 	
 	CarMaintenance getByid(int id);
 	List<CarMaintenance> getByCar_CarId(int carId);
-}
+	//findbycaridandreturndate
+	}

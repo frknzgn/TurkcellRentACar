@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.RentalService;
@@ -20,7 +21,6 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.RentalDao;
-import com.turkcell.rentacar.entites.concretes.CarMaintenance;
 import com.turkcell.rentacar.entites.concretes.Rental;
 
 @Service
@@ -31,7 +31,7 @@ public class RentalManager implements RentalService{
 	private ModelMapperService modelMapperService;
 	
 	@Autowired
-	public RentalManager(RentalDao rentalDao,ModelMapperService modelMapperService,CarMaintenanceManager carMaintenanceService) {
+	public RentalManager(RentalDao rentalDao,ModelMapperService modelMapperService,@Lazy CarMaintenanceManager carMaintenanceService) {
 		
 		this.carMaintenanceService = carMaintenanceService;
 		this.rentalDao=rentalDao;
@@ -93,24 +93,22 @@ public class RentalManager implements RentalService{
 	}
 	
 	 private void checkIfCarIsInMaintenance(int carId) throws BusinessException {
-		 
-	        DataResult<List<ListCarMaintenanceDto>> result = this.carMaintenanceService.getByCarId(carId);
-	        List<CarMaintenance> response = result.getData().stream()
-	                .map(carMaintenance -> this.modelMapperService.forDto().map(carMaintenance, CarMaintenance.class))
-	                .collect(Collectors.toList());
-	        for (CarMaintenance carMaintenance : response
-	        ) {
-	            if (carMaintenance.getReturnDate() == null) {
-	                throw new BusinessException("Araba bakımda");
-	            }
-	        }
+		 	
+		 List<ListCarMaintenanceDto> maintenances = this.carMaintenanceService.getByCarId(carId).getData();
+	         
+		 for (ListCarMaintenanceDto listCarMaintenanceDtos : maintenances) {
+			if(listCarMaintenanceDtos.getReturnDate()==null) {
+				throw new BusinessException("Car is in maintenance.");
+			}
+		}
+	        
 	    }
 	 
-	 private boolean checkIfRentExists(int rentId) throws BusinessException {
-	        if (!rentalDao.existsById(rentId)){
-	            throw new BusinessException("Rent does not exist with id: ' "+rentId+" '.");
+	 private void checkIfRentExists(int rentalId) throws BusinessException {
+	        if (!rentalDao.existsById(rentalId)){
+	            throw new BusinessException("Rent does not exist with id: ' "+rentalId+" '.");
 	        }
-	        return true;
+	        
 	    }
 
 }

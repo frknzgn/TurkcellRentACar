@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetRentalDto {
 	
-	private int id;
+	private int rentalId;
 	private int carId;
 	private int customerId;
 	private LocalDate rentDate;

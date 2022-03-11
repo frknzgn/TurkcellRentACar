@@ -7,11 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
+import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.dtos.carMaintenance.GetCarMaintenanceDto;
 import com.turkcell.rentacar.business.dtos.carMaintenance.ListCarMaintenanceDto;
+import com.turkcell.rentacar.business.dtos.rental.ListRentalDto;
 import com.turkcell.rentacar.business.requests.carMaintenance.CreateCarMaintenanceRequest;
 import com.turkcell.rentacar.business.requests.carMaintenance.DeleteCarMaintenanceRequest;
 import com.turkcell.rentacar.business.requests.carMaintenance.UpdateCarMaintenanceRequest;
+import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.abstracts.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -24,11 +27,13 @@ import com.turkcell.rentacar.entites.concretes.CarMaintenance;
 public class CarMaintenanceManager implements CarMaintenanceService {
 
 	private CarMaintenanceDao carMaintenanceDao;
+	private RentalService rentalService;
 	private ModelMapperService modelMapperService;
 	
 	@Autowired
-	public CarMaintenanceManager(CarMaintenanceDao carMaintenanceDao, ModelMapperService modelMapperService) {
+	public CarMaintenanceManager(CarMaintenanceDao carMaintenanceDao,RentalService rentalService, ModelMapperService modelMapperService) {
 		this.carMaintenanceDao=carMaintenanceDao;
+		this.rentalService = rentalService;
 		this.modelMapperService=modelMapperService;
 	}
 	
@@ -61,8 +66,9 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 	}
 
 	@Override
-	public Result add(CreateCarMaintenanceRequest createCarMaintenanceRequest) {
+	public Result add(CreateCarMaintenanceRequest createCarMaintenanceRequest) throws BusinessException {
 		
+		CheckIfCarRented(createCarMaintenanceRequest.getCarId());
 		CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(createCarMaintenanceRequest, CarMaintenance.class);
 		this.carMaintenanceDao.save(carMaintenance);
 		return new SuccessResult(carMaintenance.getDescription()+"isimli Aracın bakım bilgileri Eklendi.");
@@ -98,6 +104,18 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 		return new SuccessDataResult<GetCarMaintenanceDto>(response);
 	}
 
+	private void CheckIfCarRented(int carId) throws BusinessException {
+		
+		List<ListRentalDto> rentals=this.rentalService.getByCar_carId(carId).getData();
+		
+		for (ListRentalDto listRentalDto : rentals) {
+			
+			if(listRentalDto.getReturnDate()==null) {
+				throw new BusinessException("Car has been rented.");
+			}
+		}
+		
+	}
 
 	
 

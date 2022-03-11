@@ -14,9 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateRentalRequest {
 	
-	@NotNull
-	@Min(0)
-	private int id;
+	
 	
 	@NotNull
 	@Min(0)
@@ -30,5 +28,7 @@ public class CreateRentalRequest {
 	private LocalDate rentDate;
 	
 	private LocalDate returnDate;
+	
+	private int additionalServiceId;
 	
 }

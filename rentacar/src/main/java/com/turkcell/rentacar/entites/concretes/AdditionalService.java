@@ -7,7 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -18,16 +19,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="colors")
-public class Color {
+@Table(name="additionalservices")
+public class AdditionalService {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "color_id")
-	private int colorId;
+	@Column(name="id")
+	private int id;
 	
-	@Column(name = "color_name")
-	private String colorName;
+	@Column(name = "name")
+	private String additionalServiceName;
 	
-	@OneToMany(mappedBy="color")
-	private List<Car> cars;
+	@Column(name = "description")
+	private String additionalServiceDescription;
+	
+	@Column(name = "price")
+	private double additionalServicePrice;
+	
+	@ManyToOne
+	@JoinColumn(name="rental_id")
+	private Rental rental;
+
 }

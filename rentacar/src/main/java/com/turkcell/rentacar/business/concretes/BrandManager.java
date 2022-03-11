@@ -15,6 +15,7 @@ import com.turkcell.rentacar.business.requests.brand.UpdateBrandRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.abstracts.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
+import com.turkcell.rentacar.core.utilities.results.ErrorDataResult;
 import com.turkcell.rentacar.core.utilities.results.ErrorResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
@@ -35,15 +36,17 @@ public class BrandManager implements BrandService{
 	}
 
 	@Override
-	public DataResult<List<ListBrandDto>> getall() {
+	public DataResult<List<ListBrandDto>> getall() throws BusinessException {
+		checkIfListEmpty();
 		var result = this.brandDao.findAll();
-		
 		List<ListBrandDto> response = result.stream()
 				.map(brand -> this.modelMapperService.forDto()
 				.map(brand,ListBrandDto.class)).collect(Collectors.toList());
 				
 				return new SuccessDataResult<List<ListBrandDto>>(response, "Data getirildi.");
 	}
+
+	
 
 	@Override
 	public Result add(CreateBrandRequest createBrandRequest) {
@@ -56,15 +59,18 @@ public class BrandManager implements BrandService{
 		}else {
 			return new ErrorResult("Marka mevcut ekleyemem.");
 		}
-		
-		
-		
+				
 	}
 
 
 	@Override
 	public DataResult<GetBrandDto> getById(int brandId) {
-		var result = this.brandDao.getById(brandId);
+		
+		//Defencive programming Ya id yoksa internal serverla logları kullanıcıya iletir
+		var result = this.brandDao.getByBrandId(brandId);
+		if(result==null) {
+			return new ErrorDataResult<GetBrandDto>("Geçersiz Id");
+		}
 		GetBrandDto response = this.modelMapperService.forDto().map(result,GetBrandDto.class);
 		return new SuccessDataResult<GetBrandDto>(response,"ID ile marka getirildi.");
 	}
@@ -96,6 +102,11 @@ public class BrandManager implements BrandService{
 		
 	}
 	
+	private void checkIfListEmpty() throws BusinessException {
+		if(this.brandDao.findAll().isEmpty()) {
+			throw new BusinessException("List is empty.");
+		}
+	}
 	
 	private boolean checkIfEmpty(int brandId) throws BusinessException {
 		

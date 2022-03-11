@@ -1,4 +1,4 @@
-package com.turkcell.rentacar.business.concretes;
+ package com.turkcell.rentacar.business.concretes;
 
 
 import java.util.List;
@@ -41,15 +41,19 @@ public class CarManager implements CarService{
 	}
 	
 	@Override
-	public DataResult<List<ListCarDto>> getAll() {
+	public DataResult<List<ListCarDto>> getAll() throws BusinessException {
+		
+		checkIfListEmpty();
 		var result = this.carDao.findAll();
 		List<ListCarDto> response = result.stream().map(car->this.modelMapperService.forDto()
 									.map(car, ListCarDto.class)).collect(Collectors.toList());
 		return new SuccessDataResult<List<ListCarDto>>(response, "Data Listelendi");
+		
 	}
 
 	@Override
 	public Result add(CreateCarRequest createCarRequest) throws BusinessException {
+		
 		Car car = this.modelMapperService.forRequest().map(createCarRequest, Car.class);
 		this.carDao.save(car);
 		return new SuccessResult(car.getDescription()+"isimli Araç Eklendi.");
@@ -57,14 +61,18 @@ public class CarManager implements CarService{
 	}
 
 	@Override
-	public DataResult<GetCarDto> getByCarId(int carId) {
+	public DataResult<GetCarDto> getByCarId(int carId) throws BusinessException {
+		
+		checkIfIdNotExist(carId);
 		Car result = this.carDao.getByCarId(carId);
 		GetCarDto response = this.modelMapperService.forDto().map(result, GetCarDto.class);
 		return new SuccessDataResult<GetCarDto>(response, "Id'si "+carId+" olan araç getirildi.");
 	}
 
 	@Override
-	public Result update(UpdateCarRequest updateCarRequest) {
+	public Result update(UpdateCarRequest updateCarRequest) throws BusinessException {
+		
+		checkIfIdNotExist(updateCarRequest.getCarId());
 		Car car = this.modelMapperService.forRequest().map(updateCarRequest, Car.class);
 		 this.carDao.save(car);
 		 return new SuccessResult(updateCarRequest.getCarId()+" 'li araç veri tabanında güncellendi.");
@@ -111,6 +119,17 @@ public class CarManager implements CarService{
 	}
 
 	
+	public void checkIfListEmpty() throws BusinessException {
+		if(this.carDao.findAll().isEmpty()) {
+			throw new BusinessException("Car List.Empty");
+		}
+	}
+	
+	public void checkIfIdNotExist(int carId) throws BusinessException {
+		if(this.carDao.getByCarId(carId)==null) {
+			throw new BusinessException("CarId.NotFound");
+		}
+	}
 	
 
 

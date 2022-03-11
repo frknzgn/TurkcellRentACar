@@ -20,6 +20,7 @@ import com.turkcell.rentacar.business.dtos.carMaintenance.ListCarMaintenanceDto;
 import com.turkcell.rentacar.business.requests.carMaintenance.CreateCarMaintenanceRequest;
 import com.turkcell.rentacar.business.requests.carMaintenance.DeleteCarMaintenanceRequest;
 import com.turkcell.rentacar.business.requests.carMaintenance.UpdateCarMaintenanceRequest;
+import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 
@@ -42,7 +43,7 @@ public class CarMaintenanceController {
 	}
 	
 	@PostMapping("/add")
-	public Result add(@RequestBody @Valid CreateCarMaintenanceRequest createCarMaintenanceRequest) {
+	public Result add(@RequestBody @Valid CreateCarMaintenanceRequest createCarMaintenanceRequest) throws BusinessException {
 		return this.carMaintenanceService.add(createCarMaintenanceRequest);
 	}
 	

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateCustomerRequest {
 	
-	private int id;
     private String email;
     private String password;
 
