@@ -48,14 +48,8 @@ public class ColorManager implements ColorService {
 	public Result add(CreateColorRequest createColorRequest) throws BusinessException {
 		
 		Color color = this.modelMapperService.forRequest().map(createColorRequest,Color.class);
-		
-		if(checkColorNameExist(color.getColorName())) {
-			this.colorDao.save(color);	
+		this.colorDao.save(color);	
 			return new SuccessResult("Eklendi");
-		}else {
-			return new ErrorResult("Renk mevcut ekleyemem.");
-		}
-			
 		
 	}
 

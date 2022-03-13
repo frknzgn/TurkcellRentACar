@@ -17,12 +17,16 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 
 public interface CarService {
 	
+	Result add(CreateCarRequest createCarRequest) throws BusinessException;
+	
 	DataResult<List<ListCarDto>> getAll() throws BusinessException;
 	DataResult<List<ListCarDto>> getAllSorted(Sort.Direction direction) throws BusinessException;
 	DataResult<List<ListCarDto>> getAllPaged(int pageNumber, int pageSize) throws BusinessException;
 	DataResult<List<ListCarByDailyPriceDto>> getCarByDailyPriceLessThanEqual(double dailyPrice) throws BusinessException;
-	Result add(CreateCarRequest createCarRequest) throws BusinessException;
 	DataResult<GetCarDto> getByCarId(int carId) throws BusinessException;
+	
 	Result update(UpdateCarRequest carRequest) throws BusinessException;
+	
 	Result delete(DeleteCarRequest deleteCarRequest) throws BusinessException;
+	
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateAdditonalServiceRequest {
 	
-	private int id;
+	private int additionalServiceId;
 	private String additionalServiceName;
 	private String additionalServiceDescription;
 	private double additionalServicePrice;

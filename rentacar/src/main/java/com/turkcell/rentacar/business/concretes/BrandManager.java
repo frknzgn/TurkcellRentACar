@@ -52,14 +52,9 @@ public class BrandManager implements BrandService{
 	public Result add(CreateBrandRequest createBrandRequest) {
 		
 		Brand brand = this.modelMapperService.forRequest().map(createBrandRequest,Brand.class);
+		this.brandDao.save(brand);
+		return new SuccessResult("Marka veritabanına eklendi.");
 		
-		if(checkBrandNameExist(brand.getBrandName())){
-			this.brandDao.save(brand);
-			return new SuccessResult("Marka veritabanına eklendi.");
-		}else {
-			return new ErrorResult("Marka mevcut ekleyemem.");
-		}
-				
 	}
 
 

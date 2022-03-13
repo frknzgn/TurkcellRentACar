@@ -14,12 +14,15 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 
 public interface RentalService {
 	
-	DataResult<List<ListRentalDto>> getall();
 	Result add(CreateRentalRequest createRentalRequest) throws BusinessException;
+	
+	DataResult<List<ListRentalDto>> getall();
 	DataResult<GetRentalDto> getById(int rentalId) ;
-	Result update(UpdateRentalRequest updateRentalRequest);
-	Result delete(DeleteRentalRequest deleteRentalRequest) throws BusinessException;
 	DataResult<List<ListRentalDto>> getByCar_carId(int carId);
+	
+	Result update(UpdateRentalRequest updateRentalRequest);
+	
+	Result delete(DeleteRentalRequest deleteRentalRequest) throws BusinessException;
 	
 	
 }

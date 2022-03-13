@@ -2,6 +2,7 @@ package com.turkcell.rentacar.api.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ public class AdditionalServiceController {
 	
 	private AdditionalServiceService additionalServiceService;
 	
+	@Autowired
 	public AdditionalServiceController(AdditionalServiceService additionalServiceService) {
 		
 		this.additionalServiceService = additionalServiceService;

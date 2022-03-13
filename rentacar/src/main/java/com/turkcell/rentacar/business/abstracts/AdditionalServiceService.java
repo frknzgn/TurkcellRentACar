@@ -13,10 +13,13 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 
 public interface AdditionalServiceService {
 	
+	Result add(CreateAdditonalServiceRequest createAdditonalServiceRequest);
+	
 	DataResult<List<ListAdditionalServiceDto>> getall() throws BusinessException;
 	DataResult<GetAdditionalServiceDto> getById(int id) throws BusinessException;
-	Result add(CreateAdditonalServiceRequest createAdditonalServiceRequest);
+	
 	Result update(UpdateAdditonalServiceRequest updateAdditonalServiceRequest) throws BusinessException;
+	
 	Result delete(DeleteAdditonalServiceRequest deleteAdditonalServiceRequest) throws BusinessException;
 	
 }

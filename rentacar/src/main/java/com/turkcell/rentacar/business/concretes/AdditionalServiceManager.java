@@ -3,6 +3,7 @@ package com.turkcell.rentacar.business.concretes;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.AdditionalServiceService;
@@ -26,6 +27,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 	private AdditionalServiceDao additionalServiceDao;
 	private ModelMapperService modelMapperService;
 	
+	@Autowired
 	public AdditionalServiceManager(ModelMapperService modelMapperService,AdditionalServiceDao additionalServiceDao) {
 		this.additionalServiceDao = additionalServiceDao;
 		this.modelMapperService = modelMapperService;
@@ -64,7 +66,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 	@Override
 	public Result update(UpdateAdditonalServiceRequest updateAdditonalServiceRequest) throws BusinessException {
 		
-		checkIfIdExist(updateAdditonalServiceRequest.getId());
+		checkIfIdExist(updateAdditonalServiceRequest.getAdditionalServiceId());
 		AdditionalService additionalService = this.modelMapperService.forRequest().map(updateAdditonalServiceRequest, AdditionalService.class);
 		this.additionalServiceDao.save(additionalService);
 		return new SuccessResult("AdditionalService.Updated");
@@ -80,7 +82,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 	}
 
 	private void checkIfListEmpty() throws BusinessException {
-		if(!this.additionalServiceDao.findAll().isEmpty()) {
+		if(this.additionalServiceDao.findAll().isEmpty()) {
 			throw new BusinessException("List is Empty.");
 		}
 	}

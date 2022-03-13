@@ -110,5 +110,13 @@ public class RentalManager implements RentalService{
 	        }
 	        
 	    }
+	 
+//	private boolean checkIfCitiesAreTheSame(int rentalId) {
+//		if(!rentalDao.getById(rentalId).getRentCity().equals(rentalDao.getById(rentalId).getReturnCity())) {
+//			return true;
+//		}else {
+//			return false;
+//		}
+//	}
 
 }

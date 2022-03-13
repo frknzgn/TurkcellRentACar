@@ -27,6 +27,9 @@ public class UpdateCarMaintenanceRequest {
 	@Size(min=2,max=250)
 	private String description;
 	
+	@NotNull
+	private LocalDate dropDate;
+	
 	@NotNull 
 	private LocalDate returnDate;
 	

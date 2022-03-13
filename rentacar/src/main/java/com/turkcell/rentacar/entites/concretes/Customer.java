@@ -9,16 +9,17 @@ import javax.persistence.Table;
 import com.turkcell.rentacar.entites.abstracts.User;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
- 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name="customers")
 public class Customer extends User{
 	
-	@OneToMany(mappedBy = "customer")
+	@OneToMany(mappedBy = "rentalId")
 	private List<Rental> rentals;
 
 

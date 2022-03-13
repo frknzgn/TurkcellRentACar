@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.entites.concretes;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -11,8 +12,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "cars")
-public class OrderedAdditionalService {
+@Table(name = "corporate_customers")
+public class CorporateCustomer extends Customer{
 	
+	@Column(name = "tax_number")
+	private String taxNumber;
+	
+	@Column(name = "company_name")
+	private String companyName;
 	
 }
