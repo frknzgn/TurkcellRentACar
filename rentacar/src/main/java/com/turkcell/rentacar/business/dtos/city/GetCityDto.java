@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class GetCityDto {
 	
 	private int cityId;
-	private String name;
+	private String cityName;
 
 }

@@ -23,7 +23,7 @@ public class CreateCarRequest {
 	@Min(0)
 	@Max(2022)
 	private int modelYear;
-	
+											//validation
 	@NotNull
 	@Size(min=2,max=250)
 	private String description;
@@ -33,5 +33,7 @@ public class CreateCarRequest {
 	
 	@NotNull
 	private int colorId;
+	
+	private int milage;
 	
 }

@@ -37,22 +37,22 @@ public class BrandManager implements BrandService{
 
 	@Override
 	public DataResult<List<ListBrandDto>> getall() throws BusinessException {
-		checkIfListEmpty();
+		
 		var result = this.brandDao.findAll();
 		List<ListBrandDto> response = result.stream()
-				.map(brand -> this.modelMapperService.forDto()
-				.map(brand,ListBrandDto.class)).collect(Collectors.toList());
+							.map(brand -> this.modelMapperService.forDto()
+									.map(brand,ListBrandDto.class)).collect(Collectors.toList());
 				
-				return new SuccessDataResult<List<ListBrandDto>>(response, "Data getirildi.");
+		return new SuccessDataResult<List<ListBrandDto>>(response, "Brand.Listed");
+		
 	}
-
-	
 
 	@Override
 	public Result add(CreateBrandRequest createBrandRequest) {
 		
 		Brand brand = this.modelMapperService.forRequest().map(createBrandRequest,Brand.class);
 		this.brandDao.save(brand);
+		
 		return new SuccessResult("Marka veritabanına eklendi.");
 		
 	}
@@ -61,35 +61,31 @@ public class BrandManager implements BrandService{
 	@Override
 	public DataResult<GetBrandDto> getById(int brandId) {
 		
-		//Defencive programming Ya id yoksa internal serverla logları kullanıcıya iletir
+		checkIfIdExist(brandId);
+																	//Defencive programming Ya id yoksa internal serverla logları kullanıcıya iletir
 		var result = this.brandDao.getByBrandId(brandId);
-		if(result==null) {
-			return new ErrorDataResult<GetBrandDto>("Geçersiz Id");
-		}
 		GetBrandDto response = this.modelMapperService.forDto().map(result,GetBrandDto.class);
-		return new SuccessDataResult<GetBrandDto>(response,"ID ile marka getirildi.");
+		
+		return new SuccessDataResult<GetBrandDto>(response,"Brand.GetById");
+		
 	}
-	
 	
 	@Override
 	public Result update(UpdateBrandRequest updateBrandRequest) throws BusinessException {
 		
+		checkIfIdExist(updateBrandRequest.getBrandId());
+	
 		Brand brand = this.modelMapperService.forRequest().map(updateBrandRequest,Brand.class);
+		this.brandDao.save(brand);
 		
-		if(!checkIfEmpty(brand.getBrandId())) {
-
-			this.brandDao.save(brand);
-			return new SuccessResult("Güncellendi.");
-		}else {
-			
-			return new ErrorResult("Id boş.");
-			
-		}
+		return new SuccessResult("Brand.Updated");
+		
 	}
 	
-
 	@Override
 	public Result delete(DeleteBrandRequest deleteBrandRequest) {
+		
+		checkIfIdExist(deleteBrandRequest.getBrandId());
 		
 		Brand brand = this.modelMapperService.forRequest().map(deleteBrandRequest, Brand.class);
 		this.brandDao.delete(brand);
@@ -97,29 +93,11 @@ public class BrandManager implements BrandService{
 		
 	}
 	
-	private void checkIfListEmpty() throws BusinessException {
-		if(this.brandDao.findAll().isEmpty()) {
-			throw new BusinessException("List is empty.");
-		}
-	}
-	
-	private boolean checkIfEmpty(int brandId) throws BusinessException {
+	private void checkIfIdExist(int brandId) throws BusinessException {
 		
-		if(this.brandDao.getByBrandId(brandId)==null) {
-			throw new BusinessException("This Id is empty");
+		if(this.brandDao.getById(brandId).equals(null)) {
+			throw new BusinessException("Id is Null.");
 		}
-		return true;
-	}
-	
-	private boolean checkBrandNameExist(String brandName){
 		
-		List<Brand> brands = this.brandDao.findAll();
-		
-		for (Brand brand : brands) {
-			if(brand.getBrandName().toLowerCase()==brandName.toLowerCase()) {
-				return false;
-			}
-		}
-		return false;
 	}
 }

@@ -56,3 +56,10 @@ public class RentacarApplication {
 	 }
 	 
 }
+
+
+
+//City isim null kaydetme.
+//Business Logic kısımları
+//defensive 
+//invoice logicleri

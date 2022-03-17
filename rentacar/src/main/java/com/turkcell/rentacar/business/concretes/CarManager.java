@@ -36,64 +36,57 @@ public class CarManager implements CarService{
 	
 	@Autowired
 	public CarManager(CarDao carDao,ModelMapperService modelMapperService) {
+		
 		this.carDao=carDao;
 		this.modelMapperService=modelMapperService;
+		
 	}
 	
-	@Override
-	public DataResult<List<ListCarDto>> getAll() throws BusinessException {
-		
-		checkIfListEmpty();
-		var result = this.carDao.findAll();
-		List<ListCarDto> response = result.stream().map(car->this.modelMapperService.forDto()
-									.map(car, ListCarDto.class)).collect(Collectors.toList());
-		return new SuccessDataResult<List<ListCarDto>>(response, "Data Listelendi");
-		
-	}
 
 	@Override
 	public Result add(CreateCarRequest createCarRequest) throws BusinessException {
 		
 		Car car = this.modelMapperService.forRequest().map(createCarRequest, Car.class);
 		this.carDao.save(car);
-		return new SuccessResult(car.getDescription()+"isimli Araç Eklendi.");
+		
+		return new SuccessResult("Car.Added.");
+		
+	}
+	
+	
+	@Override
+	public DataResult<List<ListCarDto>> getAll() throws BusinessException {
+	
+		var result = this.carDao.findAll();
+		List<ListCarDto> response = result.stream().map(car->this.modelMapperService.forDto().map(car, ListCarDto.class)).collect(Collectors.toList());
+		
+		return new SuccessDataResult<List<ListCarDto>>(response, "Data Listelendi");
 		
 	}
 
 	@Override
 	public DataResult<GetCarDto> getByCarId(int carId) throws BusinessException {
 		
-		checkIfIdNotExist(carId);
+		checkIfIdExist(carId);
+		
 		Car result = this.carDao.getByCarId(carId);
 		GetCarDto response = this.modelMapperService.forDto().map(result, GetCarDto.class);
-		return new SuccessDataResult<GetCarDto>(response, "Id'si "+carId+" olan araç getirildi.");
-	}
-
-	@Override
-	public Result update(UpdateCarRequest updateCarRequest) throws BusinessException {
 		
-		checkIfIdNotExist(updateCarRequest.getCarId());
-		Car car = this.modelMapperService.forRequest().map(updateCarRequest, Car.class);
-		 this.carDao.save(car);
-		 return new SuccessResult(updateCarRequest.getCarId()+" 'li araç veri tabanında güncellendi.");
-	}
-
-	@Override
-	public Result delete(DeleteCarRequest deleteCarRequest) {
-		Car car = this.modelMapperService.forRequest().map(deleteCarRequest, Car.class);
-		this.carDao.delete(car);
-		return new SuccessResult(car.getDescription()+" silindi.");
+		return new SuccessDataResult<GetCarDto>(response, "Car.GetById");
 		
 	}
-
+	
 	@Override
 	public DataResult<List<ListCarDto>> getAllPaged(int pageNumber, int pageSize) {
 		
 		Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
+		
 		var result = this.carDao.findAll(pageable).getContent();
 		List<ListCarDto> response = result.stream().map(car->this.modelMapperService.forDto()
 									.map(car, ListCarDto.class)).collect(Collectors.toList());
-		return new SuccessDataResult<List<ListCarDto>>(response, "Data Listelendi");
+
+		return new SuccessDataResult<List<ListCarDto>>(response, "Car.ListedByPage");
+		
 	}
 
 	@Override
@@ -102,32 +95,52 @@ public class CarManager implements CarService{
 		Sort sort = Sort.by(direction,"dailyPrice");
 		
 		var result = this.carDao.findAll(sort);
-		List<ListCarDto> response = result.stream().map(car->this.modelMapperService.forDto()
-									.map(car, ListCarDto.class)).collect(Collectors.toList());
+		List<ListCarDto> response = result.stream().map(car->this.modelMapperService.forDto().map(car, ListCarDto.class)).collect(Collectors.toList());
+		
 		return new SuccessDataResult<List<ListCarDto>>(response, "Data Listelendi");
+		
 	}
 
 	@Override
 	public DataResult<List<ListCarByDailyPriceDto>> getCarByDailyPriceLessThanEqual(double dailyPrice) throws BusinessException {
 		
 		var result = this.carDao.getCarByDailyPriceLessThanEqual(dailyPrice);
-		
 		List<ListCarByDailyPriceDto> response = result.stream().map(car->this.modelMapperService.forDto()
 									.map(car, ListCarByDailyPriceDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<ListCarByDailyPriceDto>>(response, "Data Listelendi");
+		return new SuccessDataResult<List<ListCarByDailyPriceDto>>(response, "Car.ListedByDailyPrice");
+		
 	}
 
 	
-	public void checkIfListEmpty() throws BusinessException {
-		if(this.carDao.findAll().isEmpty()) {
-			throw new BusinessException("Car List.Empty");
-		}
+	@Override
+	public Result update(UpdateCarRequest updateCarRequest) throws BusinessException {
+		
+		checkIfIdExist(updateCarRequest.getCarId());
+		
+		Car car = this.modelMapperService.forRequest().map(updateCarRequest, Car.class);
+		this.carDao.save(car);
+		
+		return new SuccessResult(updateCarRequest.getCarId()+" Car.Updated");
+		
+	}
+
+	
+	@Override
+	public Result delete(DeleteCarRequest deleteCarRequest) {
+		Car car = this.modelMapperService.forRequest().map(deleteCarRequest, Car.class);
+		this.carDao.delete(car);
+		return new SuccessResult(car.getDescription()+" silindi.");
+		
 	}
 	
-	public void checkIfIdNotExist(int carId) throws BusinessException {
-		if(this.carDao.getByCarId(carId)==null) {
+	
+	public void checkIfIdExist(int carId) throws BusinessException {
+		
+		if(this.carDao.getByCarId(carId).equals(null)) {
+			
 			throw new BusinessException("CarId.NotFound");
+			
 		}
 	}
 	

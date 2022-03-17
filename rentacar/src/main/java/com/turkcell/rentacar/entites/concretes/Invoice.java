@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.entites.concretes;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -9,8 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,38 +25,35 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "cars")
-public class Car  {
+@Table(name = "Invoices")
+public class Invoice {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "car_id")
-	private int carId;
+	@Column(name = "invoice_id")
+	private int invoiceId;
 	
-	@Column(name = "daily_price")
-	private double dailyPrice;
+	@Column(name = "invoice_number")
+	private String invoiceNumber;
 	
-	@Column(name = "model_year")
-	private int modelYear;
+	@Column(name = "creating_date")
+	private LocalDate creatingDate;
 	
-	@Column(name = "description")
-	private String description;
+	@Column(name = "rent_date")
+	private LocalDate rentDate;
 	
-	@Column(name = "milage")
-	private int milage;
+	@Column(name = "return_date")
+	private LocalDate returnDate;
+	
+	@Transient
+	private int totalRentDay;
+	
+	@Column(name = "total")
+	private double totalInvoiceCost;
 	
 	@ManyToOne
-	@JoinColumn(name = "brand_id")
-	private Brand brand;
+	@JoinColumn(name = "invoices", nullable = false)
+	private Customer customer;
 	
-	@ManyToOne
-	@JoinColumn(name = "color_id")
-	private Color color;
-	
-	@OneToMany(mappedBy = "id")
-	private List<CarMaintenance> carMaintenances;
-	
-	@OneToMany(mappedBy = "rentalId")
-	private List<Rental> rentals;
-
+//isimlendirme daha belirgin olmalı.
 }

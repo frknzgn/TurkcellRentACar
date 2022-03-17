@@ -1,4 +1,4 @@
-package com.turkcell.rentacar.business.requests.city;
+package com.turkcell.rentacar.business.requests.invoice;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +11,8 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateCityRequest {
+public class DeleteInvoiceRequest {
 
-	private int cityId;
-	private String cityName;
-
+	private int invoiceId;
+	
 }

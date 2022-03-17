@@ -11,8 +11,10 @@ import com.turkcell.rentacar.business.dtos.city.ListCityDto;
 import com.turkcell.rentacar.business.requests.city.CreateCityRequest;
 import com.turkcell.rentacar.business.requests.city.DeleteCityRequest;
 import com.turkcell.rentacar.business.requests.city.UpdateCityRequest;
+import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.abstracts.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
+import com.turkcell.rentacar.core.utilities.results.ErrorResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
@@ -38,6 +40,7 @@ public class CityManager implements CityService{
 		
 		City city = this.modelMapperService.forRequest().map(createCityRequest, City.class);
 		this.cityDao.save(city);
+		
 		return new SuccessResult("City.Added.");
 		
 	}
@@ -49,23 +52,44 @@ public class CityManager implements CityService{
 		List<ListCityDto> response = result.stream().
 							map(city-> this.modelMapperService.forDto().
 									map(city, ListCityDto.class)).collect(Collectors.toList());
+		
 		return new SuccessDataResult<List<ListCityDto>>(response, "City.Listed.");
+		
 	}
 
 	@Override
 	public Result update(UpdateCityRequest updateCityRequest) {
 		
+		checkIfCityIdExist(updateCityRequest.getCityId());
+		
 		City city = this.modelMapperService.forRequest().map(updateCityRequest, City.class);
 		this.cityDao.save(city);
+		
 		return new SuccessResult("City.Updated.");
+		
 	}
 
 	@Override
 	public Result delete(DeleteCityRequest deleteCityRequest) {
 		
+		checkIfCityIdExist(deleteCityRequest.getCityId());
+		
 		City city = this.modelMapperService.forRequest().map(deleteCityRequest, City.class);
 		this.cityDao.delete(city);
-		return new SuccessResult("City.Deleted.");
+		
+		return new SuccessResult("City.Deleted");
+		
+	}
+	
+	private void checkIfCityIdExist(int cityId) {
+		
+		if(this.cityDao.getById(cityId).equals(null)) {
+			
+			throw new BusinessException("Id.NotExist");
+			
+		}
 	}
 
 }
+
+	

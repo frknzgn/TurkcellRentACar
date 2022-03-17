@@ -25,13 +25,13 @@ public class CarMaintenance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private int id;//??
 	
 	@Column(name = "description")
 	private String description;
 	
 	@Column(name = "drop_date")
-	private LocalDate dropDate;
+	private LocalDate dropDate;//??
 	
 	@Column(name = "return_date")
 	private LocalDate returnDate;

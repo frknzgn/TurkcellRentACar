@@ -36,20 +36,24 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 	
 	@Override
 	public DataResult<List<ListAdditionalServiceDto>> getall() throws BusinessException {
-		checkIfListEmpty();
+		
 		var result = this.additionalServiceDao.findAll();
 		List<ListAdditionalServiceDto> response = result.stream().
 					map(service->this.modelMapperService.forDto().
 						map(service, ListAdditionalServiceDto.class)).collect(Collectors.toList());
+		
 		return new SuccessDataResult<List<ListAdditionalServiceDto>>(response, "AdditionalService.Listed");
+		
 	}
 
 	@Override
 	public DataResult<GetAdditionalServiceDto> getById(int id) throws BusinessException {
 		
 		checkIfIdExist(id);
+		
 		AdditionalService additionalService = this.additionalServiceDao.getById(id);
 		GetAdditionalServiceDto response = this.modelMapperService.forDto().map(additionalService, GetAdditionalServiceDto.class);
+		
 		return new SuccessDataResult<GetAdditionalServiceDto>(response, "AdditionalService.Get");
 		
 	}
@@ -59,6 +63,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 
 		AdditionalService additionalService = this.modelMapperService.forRequest().map(createAdditonalServiceRequest, AdditionalService.class);
 		this.additionalServiceDao.save(additionalService);
+		
 		return new SuccessResult("AdditionalService.Added");
 		
 	}
@@ -67,29 +72,34 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 	public Result update(UpdateAdditonalServiceRequest updateAdditonalServiceRequest) throws BusinessException {
 		
 		checkIfIdExist(updateAdditonalServiceRequest.getAdditionalServiceId());
+		
 		AdditionalService additionalService = this.modelMapperService.forRequest().map(updateAdditonalServiceRequest, AdditionalService.class);
 		this.additionalServiceDao.save(additionalService);
+		
 		return new SuccessResult("AdditionalService.Updated");
+		
 	}
 
 	@Override
 	public Result delete(DeleteAdditonalServiceRequest deleteAdditonalServiceRequest) throws BusinessException {
 		
 		checkIfIdExist(deleteAdditonalServiceRequest.getId());
+		
 		AdditionalService additionalService = this.modelMapperService.forRequest().map(deleteAdditonalServiceRequest, AdditionalService.class);
 		this.additionalServiceDao.delete(additionalService);
+		
 		return new SuccessResult("AdditionalService.Deleted");
+		
 	}
 
-	private void checkIfListEmpty() throws BusinessException {
-		if(this.additionalServiceDao.findAll().isEmpty()) {
-			throw new BusinessException("List is Empty.");
+	
+	private void checkIfIdExist(int additionalServiceId) throws BusinessException {
+		
+		if(this.additionalServiceDao.getById(additionalServiceId).equals(null)) {
+			
+			throw new BusinessException("Id is Null.");
+			
 		}
 	}
 	
-	private void checkIfIdExist(int additionalServiceId) throws BusinessException {
-		if(this.additionalServiceDao.getById(additionalServiceId).equals(null)) {
-			throw new BusinessException("Id is Null.");
-		}
-	}
 }

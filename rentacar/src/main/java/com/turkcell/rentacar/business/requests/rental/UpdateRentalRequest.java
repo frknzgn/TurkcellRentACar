@@ -19,7 +19,7 @@ public class UpdateRentalRequest {
 	
 	@NotNull
 	@Min(0)
-	private int id;
+	private int rentalId;
 	
 	@NotNull
 	@Min(0)
@@ -33,10 +33,14 @@ public class UpdateRentalRequest {
 	private LocalDate rentDate;
 	
 	@NotNull
-	private LocalDate returnDate;
+	private LocalDate rentReturnDate;
 	
 	private List<AdditionalServiceIdDto> additionalServicesIds;
 	
-	private double totalPrice;
+	private double rentalTotalPrice;
 	
+	private int rentMilage;
+	
+	@NotNull
+	private int rentReturnMilage;
 }

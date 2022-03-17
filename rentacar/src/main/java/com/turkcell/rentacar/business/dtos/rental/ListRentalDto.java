@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 public class ListRentalDto {
 	
 	private int rentalId;
-	private GetCarDto car;
 	private int userId;
 	private LocalDate rentDate;
 	private LocalDate returnDate;

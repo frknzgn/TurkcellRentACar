@@ -2,7 +2,6 @@ package com.turkcell.rentacar.entites.concretes;
 
 import java.util.List;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,10 +11,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -28,9 +31,12 @@ public class City {
 	private int cityId;
 	
 	@Column(name = "city_name")
-	private String name;
+	private String cityName;
 	
 	@OneToMany(mappedBy = "rentalId")
 	private List<Rental> rentals;
+	
+	//farklı şehirlere göre farklı isterler gelebilir.
+	//rental history tablosu gelebilir.
 
 }
