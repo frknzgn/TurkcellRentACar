@@ -5,7 +5,6 @@ package com.turkcell.rentacar.business.dtos.customer;
 import java.util.List;
 
 import com.turkcell.rentacar.business.dtos.rental.GetRentalDto;
-import com.turkcell.rentacar.entites.concretes.Rental;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

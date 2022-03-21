@@ -23,7 +23,7 @@ public class User {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "user_id")
     private int userId;
     
     @Column(name = "email", unique = true)

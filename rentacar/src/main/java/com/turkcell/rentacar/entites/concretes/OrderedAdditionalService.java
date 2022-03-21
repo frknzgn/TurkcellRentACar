@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -23,18 +25,19 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "ordered_additional_services")
+@PrimaryKeyJoinColumn(name = "customer_id")
 public class OrderedAdditionalService {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "ordered_additional_service_id", nullable = false)
     private int id;
 
     @Column(name = "quantity")
     private int quantity;
 
-    @Column(name = "bill")
-    private double bill;
+    @Column(name = "ordered_additional_service_bill")
+    private double orderedAdditionalServiceBill;
 
     @ManyToOne()
     @JoinColumn(name = "additional_service_id", nullable = false)
@@ -43,5 +46,10 @@ public class OrderedAdditionalService {
     @ManyToOne()
     @JoinColumn(name = "rental_id", nullable = false)
     private Rental rental;
+    
+    @OneToOne(mappedBy = "orderedAdditionalService")
+	private Payment payment;
+    
+   
 
 }

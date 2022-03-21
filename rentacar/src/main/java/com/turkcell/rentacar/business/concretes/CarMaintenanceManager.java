@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
-import com.turkcell.rentacar.business.dtos.car.ListCarDto;
 import com.turkcell.rentacar.business.dtos.carMaintenance.GetCarMaintenanceDto;
 import com.turkcell.rentacar.business.dtos.carMaintenance.ListCarMaintenanceDto;
 import com.turkcell.rentacar.business.dtos.rental.ListRentalDto;

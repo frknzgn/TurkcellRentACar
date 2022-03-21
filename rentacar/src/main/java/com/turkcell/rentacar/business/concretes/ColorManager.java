@@ -15,7 +15,6 @@ import com.turkcell.rentacar.business.requests.color.UpdateColorRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.abstracts.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
-import com.turkcell.rentacar.core.utilities.results.ErrorResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
@@ -47,9 +46,12 @@ public class ColorManager implements ColorService {
 	@Override
 	public Result add(CreateColorRequest createColorRequest) throws BusinessException {
 		
+		checkColorNameExist(createColorRequest.getColorName());
+		
 		Color color = this.modelMapperService.forRequest().map(createColorRequest,Color.class);
-		this.colorDao.save(color);	
-			return new SuccessResult("Eklendi");
+		this.colorDao.save(color);
+		
+		return new SuccessResult("Eklendi");
 		
 	}
 
@@ -60,16 +62,16 @@ public class ColorManager implements ColorService {
 		return new SuccessDataResult<GetColorDto>(response, "Id ye göre renk getirildi.");
 	}
 	
-	private boolean checkColorNameExist(String colorName){
+	private void checkColorNameExist(String colorName){
 			
 		List<Color> colors = this.colorDao.findAll();
 		
 		for (Color color : colors) {
 			if(color.getColorName().toLowerCase()==colorName.toLowerCase()) {
-				return false;
+				throw new BusinessException("Color.Exists.");
 			}
 		}
-		return false;
+			
 	}
 
 	@Override

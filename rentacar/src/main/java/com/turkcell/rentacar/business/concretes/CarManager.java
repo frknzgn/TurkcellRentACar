@@ -44,6 +44,7 @@ public class CarManager implements CarService{
 	
 
 	@Override
+	//@Transactional(propagation = Propagation.REQUIRED)
 	public Result add(CreateCarRequest createCarRequest) throws BusinessException {
 		
 		Car car = this.modelMapperService.forRequest().map(createCarRequest, Car.class);
@@ -58,7 +59,9 @@ public class CarManager implements CarService{
 	public DataResult<List<ListCarDto>> getAll() throws BusinessException {
 	
 		var result = this.carDao.findAll();
-		List<ListCarDto> response = result.stream().map(car->this.modelMapperService.forDto().map(car, ListCarDto.class)).collect(Collectors.toList());
+		List<ListCarDto> response = result.stream().
+				map(car->this.modelMapperService.forDto().
+						map(car, ListCarDto.class)).collect(Collectors.toList());
 		
 		return new SuccessDataResult<List<ListCarDto>>(response, "Data Listelendi");
 		
@@ -82,7 +85,8 @@ public class CarManager implements CarService{
 		Pageable pageable = PageRequest.of(pageNumber-1, pageSize);
 		
 		var result = this.carDao.findAll(pageable).getContent();
-		List<ListCarDto> response = result.stream().map(car->this.modelMapperService.forDto()
+		List<ListCarDto> response = result.stream().
+				map(car->this.modelMapperService.forDto()
 									.map(car, ListCarDto.class)).collect(Collectors.toList());
 
 		return new SuccessDataResult<List<ListCarDto>>(response, "Car.ListedByPage");
@@ -95,7 +99,9 @@ public class CarManager implements CarService{
 		Sort sort = Sort.by(direction,"dailyPrice");
 		
 		var result = this.carDao.findAll(sort);
-		List<ListCarDto> response = result.stream().map(car->this.modelMapperService.forDto().map(car, ListCarDto.class)).collect(Collectors.toList());
+		List<ListCarDto> response = result.stream().
+				map(car->this.modelMapperService.forDto().
+						map(car, ListCarDto.class)).collect(Collectors.toList());
 		
 		return new SuccessDataResult<List<ListCarDto>>(response, "Data Listelendi");
 		
@@ -105,7 +111,8 @@ public class CarManager implements CarService{
 	public DataResult<List<ListCarByDailyPriceDto>> getCarByDailyPriceLessThanEqual(double dailyPrice) throws BusinessException {
 		
 		var result = this.carDao.getCarByDailyPriceLessThanEqual(dailyPrice);
-		List<ListCarByDailyPriceDto> response = result.stream().map(car->this.modelMapperService.forDto()
+		List<ListCarByDailyPriceDto> response = result.stream().
+				map(car->this.modelMapperService.forDto()
 									.map(car, ListCarByDailyPriceDto.class)).collect(Collectors.toList());
 		
 		return new SuccessDataResult<List<ListCarByDailyPriceDto>>(response, "Car.ListedByDailyPrice");
@@ -128,8 +135,10 @@ public class CarManager implements CarService{
 	
 	@Override
 	public Result delete(DeleteCarRequest deleteCarRequest) {
+		
 		Car car = this.modelMapperService.forRequest().map(deleteCarRequest, Car.class);
 		this.carDao.delete(car);
+		
 		return new SuccessResult(car.getDescription()+" silindi.");
 		
 	}

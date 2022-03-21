@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.turkcell.rentacar.business.dtos.additionalService.ListAdditionalServiceDto;
-import com.turkcell.rentacar.business.dtos.car.GetCarDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

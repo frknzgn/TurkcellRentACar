@@ -3,7 +3,6 @@ package com.turkcell.rentacar.dataAccess.abstracts;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import com.turkcell.rentacar.entites.concretes.AdditionalService;
 

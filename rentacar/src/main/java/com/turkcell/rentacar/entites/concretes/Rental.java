@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -37,7 +38,7 @@ public class Rental {
 	private Car car;
 	
 	@ManyToOne
-	@JoinColumn(name="id")
+	@JoinColumn(name="customer_id")
 	private Customer customer;
 	
 	@Column(name="rent_date")
@@ -67,6 +68,9 @@ public class Rental {
 	@OneToMany(mappedBy = "rental", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     private Set<OrderedAdditionalService> orderedAdditionalServices;
+	
+	@OneToOne(mappedBy = "rental")
+	private Invoice invoice;
 	
 //	@ManyToMany(fetch = FetchType.LAZY)
 //	@JoinTable(name = "ordered_additional_services",
