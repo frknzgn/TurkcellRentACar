@@ -2,6 +2,8 @@ package com.turkcell.rentacar.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +22,6 @@ import com.turkcell.rentacar.business.requests.color.DeleteColorRequest;
 import com.turkcell.rentacar.business.requests.color.UpdateColorRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
-import com.turkcell.rentacar.core.utilities.results.ErrorDataResult;
-import com.turkcell.rentacar.core.utilities.results.ErrorResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 
 
@@ -33,64 +33,47 @@ public class ColorController {
 	
 	@Autowired
 	public ColorController(ColorService colorService) {
+		
 		this.colorService = colorService;
+		
 	}
+	
 	
 	@GetMapping("/getall")
 	public DataResult<List<ListColorDto>> getall(){
 		
-		try {
-			return this.colorService.getall();
-		} catch (BusinessException e) {
-			return new ErrorDataResult<List<ListColorDto>>(e.getMessage());
-		}
+		return this.colorService.getall();
 	
 	}
 	
 	@PostMapping("/add")
 	public Result add(@RequestBody CreateColorRequest createColorRequest) throws BusinessException {
 		
-		try {
-			return this.colorService.add(createColorRequest);
-		} catch (BusinessException e) {
-			return new ErrorResult(e.getMessage());
-		}
-		
+		return this.colorService.add(createColorRequest);
+
 	}
 	
 	@GetMapping("/getbyid")
-	public DataResult<GetColorDto> getbyid(@RequestParam int id) throws BusinessException{
-		try {
-			return this.colorService.getById(id);
-		} catch (BusinessException e) {
-			return new ErrorDataResult<GetColorDto>(e.getMessage());
-		}
+	public DataResult<GetColorDto> getbyid(@RequestParam @Valid int colorId) {
 		
-		
+			return this.colorService.getById(colorId);
+
 	}
 	
-	@DeleteMapping("/delete")
-	public Result delete(@RequestBody DeleteColorRequest deleteColorRequest) throws BusinessException{
-		
-		try {
-			return this.colorService.delete(deleteColorRequest);
-		} catch (BusinessException e) {
-			return new ErrorResult(null);
-		}
-		
-	}
 	
 	@PutMapping("/update")
-	public Result update(@RequestBody UpdateColorRequest updateColorRequest) throws BusinessException {
+	public Result update(@RequestBody @Valid UpdateColorRequest updateColorRequest) throws BusinessException {
 		
-		try {
-			return this.colorService.update(updateColorRequest);
-		} catch (BusinessException e) {
-			return new ErrorResult(e.getMessage());
-		}
-		
+		return this.colorService.update(updateColorRequest);
+
 	}
 	
 	
+	@DeleteMapping("/delete")
+	public Result delete(@RequestBody @Valid DeleteColorRequest deleteColorRequest) throws BusinessException{
+		
+		return this.colorService.delete(deleteColorRequest);
+		
+	}
 	
 }

@@ -8,8 +8,8 @@ import com.turkcell.rentacar.entites.concretes.City;
 @Repository
 public interface CityDao extends JpaRepository<City, Integer> {
 	
-	City getById(int cityId);
+	City getByCityId(int cityId);
 	
-	City findByCityName(String cityName);
+	City getByCityName(String cityName);
 	
 }

@@ -11,7 +11,7 @@ import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 
-public interface IndividualCustomerService {
+public interface IndividualCustomerService extends CustomerService {
 	
 	Result add(CreateIndividualCustomerRequest createIndividualCustomerRequest) throws BusinessException;
 	

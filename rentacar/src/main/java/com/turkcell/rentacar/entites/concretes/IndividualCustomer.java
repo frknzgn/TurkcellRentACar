@@ -6,14 +6,10 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -26,4 +22,7 @@ public class IndividualCustomer extends Customer {
 	
 	@Column(name = "individual_customer_lastName")
 	private String lastName;
+	
+	@Column(name = "individual_customer_nationality_id")
+	private String individualCustomerNationalityId;
 }

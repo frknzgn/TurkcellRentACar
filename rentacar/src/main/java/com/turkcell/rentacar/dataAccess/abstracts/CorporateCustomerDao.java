@@ -7,5 +7,7 @@ import com.turkcell.rentacar.entites.concretes.CorporateCustomer;
 
 @Repository
 public interface CorporateCustomerDao extends JpaRepository<CorporateCustomer, Integer>{
-
+	
+	CorporateCustomer getByCustomerId(int customerId);
+	
 }

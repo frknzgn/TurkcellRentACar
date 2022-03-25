@@ -18,6 +18,7 @@ import com.turkcell.rentacar.business.dtos.rental.ListRentalDto;
 import com.turkcell.rentacar.business.requests.rental.CreateRentalRequest;
 import com.turkcell.rentacar.business.requests.rental.DeleteRentalRequest;
 import com.turkcell.rentacar.business.requests.rental.UpdateRentalRequest;
+import com.turkcell.rentacar.core.constants.Messages;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.abstracts.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
@@ -95,7 +96,7 @@ public class RentalManager implements RentalService{
 		
 		checkIfCarExist(carId);
 		
-		List<Rental> result = this.rentalDao.getByCar_carId(carId);
+		List<Rental> result = this.rentalDao.getByCar_Id(carId);
         List<ListRentalDto> response = result.stream()
                 				.map(rentCar -> this.modelMapperService.forDto().
                 						map(rentCar, ListRentalDto.class)).collect(Collectors.toList());
@@ -139,7 +140,7 @@ public class RentalManager implements RentalService{
 	         
 		 for (ListCarMaintenanceDto listCarMaintenanceDtos : maintenances) {
 			if(listCarMaintenanceDtos.getReturnDate().equals(null)) {
-				throw new BusinessException("Car is in maintenance.");
+				throw new BusinessException(Messages.CARINMAİNTENANCE);
 			}
 		}
 	        
@@ -147,7 +148,7 @@ public class RentalManager implements RentalService{
 	 
 	private void checkIfRentExists(int rentalId) throws BusinessException {
 	        if (!rentalDao.existsById(rentalId)){
-	            throw new BusinessException("Rent does not exist with id: ' "+rentalId+" '.");
+	            throw new BusinessException(Messages.RENTNOTEXİST);
 	        }
 	        
 	}
@@ -188,7 +189,7 @@ public class RentalManager implements RentalService{
     private Result updateRentCarReturnMilage(int rentalId,int rentReturnMilage) {
     	
     	this.rentalDao.getById(rentalId).getCar().setMilage(rentReturnMilage);    	
-    	return new SuccessResult("Car.Milage.Updated");
+    	return new SuccessResult(Messages.CARMİLAGEUPDATED);
     	
     	
     }

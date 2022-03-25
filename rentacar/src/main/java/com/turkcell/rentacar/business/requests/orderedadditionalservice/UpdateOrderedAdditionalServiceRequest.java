@@ -23,4 +23,7 @@ public class UpdateOrderedAdditionalServiceRequest {
 	 @Positive
 	 @Min(1)
 	 private int quantity;
+	 
+	 private int rentalId;
+	 
 }

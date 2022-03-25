@@ -70,7 +70,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 		
 		CheckIfCarExist(carId);
 		
-		var result = this.carMaintenanceDao.getByCar_CarId(carId);
+		var result = this.carMaintenanceDao.getByCar_Id(carId);
 		List<ListCarMaintenanceDto> response = result.stream().
 									map(carMaintenance->this.modelMapperService.forDto().
 											map(carMaintenance, ListCarMaintenanceDto.class)).collect(Collectors.toList());
@@ -84,7 +84,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 		
 		CheckIfIdExist(carMaintenanceId);
 		
-		CarMaintenance result = this.carMaintenanceDao.getByid(carMaintenanceId);
+		CarMaintenance result = this.carMaintenanceDao.getByCarMaintenanceId(carMaintenanceId);
 		GetCarMaintenanceDto response = this.modelMapperService.forDto().map(result, GetCarMaintenanceDto.class);
 		
 		return new SuccessDataResult<GetCarMaintenanceDto>(response);
@@ -134,7 +134,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 	
 	private void CheckIfIdExist(int carMaintenancesId) {
 		
-		if(this.carMaintenanceDao.getByid(carMaintenancesId).equals(null)) {
+		if(this.carMaintenanceDao.getByCarMaintenanceId(carMaintenancesId).equals(null)) {
 			
 			throw new BusinessException("Id is Null.");
 			

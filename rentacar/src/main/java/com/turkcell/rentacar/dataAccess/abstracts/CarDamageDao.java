@@ -7,5 +7,7 @@ import com.turkcell.rentacar.entites.concretes.CarDamage;
 
 @Repository
 public interface CarDamageDao extends JpaRepository<CarDamage, Integer> {
-
+	
+	CarDamage getByCarDamageId(int carDamageId);
+	
 }

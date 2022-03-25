@@ -1,5 +1,7 @@
 package com.turkcell.rentacar.business.requests.color;
 
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateColorRequest {
 	
-		private String colorName;	
+	@NotNull
+	private String colorName;	
 		
 }

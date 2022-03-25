@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AdditionalServiceIdDto {
 	
-	private int additonalServiceId;
+	private int additionalServiceId;
 	
 }

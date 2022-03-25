@@ -21,7 +21,7 @@ public class UpdateCarDamageRequest {
 	@Positive
 	private int carId;
 	
-	@Size(min = 2,max =20)
+	@Size(min = 2,max =250)
 	private String carDamageInfo;
 
 }

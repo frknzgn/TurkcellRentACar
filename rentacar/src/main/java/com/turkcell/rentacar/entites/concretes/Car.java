@@ -1,9 +1,11 @@
 package com.turkcell.rentacar.entites.concretes;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,14 +15,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -30,7 +28,7 @@ public class Car  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "car_id")
-	private int carId;
+	private int id;
 	
 	@Column(name = "daily_price")
 	private double dailyPrice;
@@ -52,13 +50,13 @@ public class Car  {
 	@JoinColumn(name = "color_id")
 	private Color color;
 	
-	@OneToMany(mappedBy = "id")
+	@OneToMany(mappedBy = "car")
 	private List<CarMaintenance> carMaintenances;
 	
-	@OneToMany(mappedBy = "rentalId")
+	@OneToMany(mappedBy = "car")
 	private List<Rental> rentals;
 	
-	@OneToMany(mappedBy = "carDamageId")
-	private List<CarDamage> carDamages;
+	@OneToMany(mappedBy = "car" , fetch = FetchType.EAGER)
+	private Set<CarDamage> carDamages;
 
 }

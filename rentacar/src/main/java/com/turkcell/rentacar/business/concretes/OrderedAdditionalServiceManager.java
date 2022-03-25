@@ -7,8 +7,10 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.OrderedAdditionalServiceService;
+import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.dtos.orderedadditionalservice.GetOrderedAdditionalServiceDto;
 import com.turkcell.rentacar.business.dtos.orderedadditionalservice.ListOrderedAdditionalServiceDto;
+import com.turkcell.rentacar.business.dtos.rental.GetRentalDto;
 import com.turkcell.rentacar.business.requests.orderedadditionalservice.CreateOrderedAdditionalServiceRequest;
 import com.turkcell.rentacar.business.requests.orderedadditionalservice.DeleteOrderedAdditionalServiceRequest;
 import com.turkcell.rentacar.business.requests.orderedadditionalservice.UpdateOrderedAdditionalServiceRequest;
@@ -20,28 +22,48 @@ import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.OrderedAdditionalServiceDao;
 import com.turkcell.rentacar.entites.concretes.OrderedAdditionalService;
+import com.turkcell.rentacar.entites.concretes.Rental;
 
 @Service
 public class OrderedAdditionalServiceManager implements OrderedAdditionalServiceService {
 	
 	private OrderedAdditionalServiceDao orderedAdditionalServiceDao;
 	private ModelMapperService modelMapperService;
+	private RentalService rentalService;
 	
-	public OrderedAdditionalServiceManager(OrderedAdditionalServiceDao orderedAdditionalServiceDao,ModelMapperService modelMapperService) {
+	public OrderedAdditionalServiceManager(RentalService rentalService,OrderedAdditionalServiceDao orderedAdditionalServiceDao,ModelMapperService modelMapperService) {
 		
 		this.modelMapperService = modelMapperService;
 		this.orderedAdditionalServiceDao = orderedAdditionalServiceDao;
+		this.rentalService = rentalService;
 		
 	}
 	
 	@Override
 	public Result add(CreateOrderedAdditionalServiceRequest createOrderedAdditionalServiceRequest) {
 		
-		OrderedAdditionalService orderedAdditionalService = this.modelMapperService.forRequest().map(createOrderedAdditionalServiceRequest, OrderedAdditionalService.class);
+		OrderedAdditionalService orderedAdditionalService = this.modelMapperService.forRequest().
+				map(createOrderedAdditionalServiceRequest, OrderedAdditionalService.class);
+		
+		checkIfRentalExists(createOrderedAdditionalServiceRequest.getRentalId());
+		
+		GetRentalDto getRentalDto = this.rentalService.getById(createOrderedAdditionalServiceRequest.getRentalId()).getData();
+		Rental rental = this.modelMapperService.forDto().map(getRentalDto, Rental.class);
+		
+		orderedAdditionalService.setRental(rental);
 		
 		this.orderedAdditionalServiceDao.save(orderedAdditionalService);
 		
 		return new SuccessResult("OrderedAdditionalService.Added");
+		
+	}
+
+	private void checkIfRentalExists(int rentalId) {
+		
+		if (this.rentalService.getById(rentalId).equals(null)) {
+			
+			throw new BusinessException("Cannot find a rented with this Id.");
+		}
 		
 	}
 

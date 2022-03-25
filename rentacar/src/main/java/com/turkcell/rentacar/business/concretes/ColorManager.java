@@ -12,6 +12,7 @@ import com.turkcell.rentacar.business.dtos.color.ListColorDto;
 import com.turkcell.rentacar.business.requests.color.CreateColorRequest;
 import com.turkcell.rentacar.business.requests.color.DeleteColorRequest;
 import com.turkcell.rentacar.business.requests.color.UpdateColorRequest;
+import com.turkcell.rentacar.core.constants.Messages;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.abstracts.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
@@ -33,15 +34,6 @@ public class ColorManager implements ColorService {
 		this.modelMapperService = modelMapperService;
 	}
 	
-	@Override
-	public DataResult<List<ListColorDto>> getall() {
-		var result = this.colorDao.findAll();
-			
-		List<ListColorDto> response = result.stream()
-						.map(color -> this.modelMapperService.forDto()
-								.map(color,ListColorDto.class)).collect(Collectors.toList());			
-		return new SuccessDataResult<List<ListColorDto>>(response, "Listelendi renkler.");
-	}
 	
 	@Override
 	public Result add(CreateColorRequest createColorRequest) throws BusinessException {
@@ -51,15 +43,67 @@ public class ColorManager implements ColorService {
 		Color color = this.modelMapperService.forRequest().map(createColorRequest,Color.class);
 		this.colorDao.save(color);
 		
-		return new SuccessResult("Eklendi");
+		return new SuccessResult(Messages.COLORADDED);
+		
+	}
+	
+	
+	@Override
+	public DataResult<List<ListColorDto>> getall() {
+		
+		var result = this.colorDao.findAll();
+		List<ListColorDto> response = result.stream()
+						.map(color -> this.modelMapperService.forDto()
+								.map(color,ListColorDto.class)).collect(Collectors.toList());			
+		return new SuccessDataResult<List<ListColorDto>>(response, Messages.COLORSLİSTED);
 		
 	}
 
 	@Override
 	public DataResult<GetColorDto> getById(int colorId) {
+		
+		checkIfColorNotExist(colorId);
+		
 		Color result = this.colorDao.getByColorId(colorId);
 		GetColorDto response = this.modelMapperService.forDto().map(result, GetColorDto.class);
-		return new SuccessDataResult<GetColorDto>(response, "Id ye göre renk getirildi.");
+		
+		return new SuccessDataResult<GetColorDto>(response, Messages.COLORGETBYID);
+		
+	}
+	
+	
+	@Override
+	public Result update(UpdateColorRequest updateColorRequest) {
+		
+		checkIfColorNotExist(updateColorRequest.getColorId()); 
+			
+		Color color = this.modelMapperService.forRequest().map(updateColorRequest, Color.class);
+		this.colorDao.save(color);
+		
+		return new SuccessResult(Messages.COLORUPTADED);
+		
+	}
+
+	@Override
+	public Result delete(DeleteColorRequest deleteColorRequest) {
+		
+		checkIfColorNotExist(deleteColorRequest.getColorId());
+		
+		Color color = this.modelMapperService.forRequest().map(deleteColorRequest, Color.class);
+		this.colorDao.delete(color);
+		
+		return new SuccessResult(Messages.COLORDELETED);
+		
+	}
+	
+	private void checkIfColorNotExist(int colorId) {
+		
+		if(this.colorDao.getByColorId(colorId)==null) {
+			
+			throw new BusinessException(Messages.COLORNOTEXİST);
+			
+		}
+		
 	}
 	
 	private void checkColorNameExist(String colorName){
@@ -67,30 +111,14 @@ public class ColorManager implements ColorService {
 		List<Color> colors = this.colorDao.findAll();
 		
 		for (Color color : colors) {
-			if(color.getColorName().toLowerCase()==colorName.toLowerCase()) {
-				throw new BusinessException("Color.Exists.");
+			if(color.getColorName().toLowerCase().matches(colorName.toLowerCase())) {
+				
+				throw new BusinessException(Messages.COLOREXİST);
+				
 			}
 		}
 			
 	}
-
-	@Override
-	public Result update(UpdateColorRequest updateColorRequest) {
-		
-		Color color = this.modelMapperService.forRequest().map(updateColorRequest, Color.class);
-		this.colorDao.save(color);
-		return new SuccessResult("güncellendi.");
-		
-	}
-
-	@Override
-	public Result delete(DeleteColorRequest deleteColorRequest) {
-		
-		Color color = this.modelMapperService.forRequest().map(deleteColorRequest, Color.class);
-		this.colorDao.delete(color);
-		return new SuccessResult("Silindi.");
-		
-	}
-		
+	
 }
 

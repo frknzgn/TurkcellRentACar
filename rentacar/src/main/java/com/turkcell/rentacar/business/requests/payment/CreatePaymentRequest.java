@@ -2,6 +2,8 @@ package com.turkcell.rentacar.business.requests.payment;
 
 import javax.validation.constraints.NotNull;
 
+import org.springframework.lang.Nullable;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,10 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreatePaymentRequest {
 	
-	@NotNull
+	@Nullable
 	private int invoiceId;
 	
-	@NotNull
+	@Nullable
 	private int orderedAdditionalServiceId;
 	
 	@NotNull
@@ -25,6 +27,9 @@ public class CreatePaymentRequest {
 	
 	@NotNull
 	private int cardCvvNumber;
+	
+	@Nullable
+	private boolean carDetailSaveOption;
 	
 }
 

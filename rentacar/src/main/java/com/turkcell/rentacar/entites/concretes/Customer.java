@@ -36,6 +36,9 @@ public class Customer extends User{
 	@OneToMany(mappedBy = "invoiceId", cascade = CascadeType.ALL)
 	private List<Invoice> invoices;
 	
+	@OneToMany(mappedBy = "cardDetailId")
+	private List<CardDetail> carDetails;	
+	
 	//Customer base'ı kalmalı.
 	//customer type olmalı(individual ve corporate)
 }

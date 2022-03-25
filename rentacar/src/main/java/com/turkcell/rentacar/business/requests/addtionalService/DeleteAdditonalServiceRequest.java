@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DeleteAdditonalServiceRequest {
 	
-	private int id;
+	private int additionalServiceId;
 	
 }

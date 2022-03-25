@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetCustomerDto {
 	
-	private int id;  
+	private int customerId;  
     private String email;
     private String password;
     private List<GetRentalDto> rentals;

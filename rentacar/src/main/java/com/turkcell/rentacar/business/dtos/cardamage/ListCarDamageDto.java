@@ -1,6 +1,6 @@
 package com.turkcell.rentacar.business.dtos.cardamage;
 
-import com.turkcell.rentacar.business.dtos.car.GetCarDto;
+import com.turkcell.rentacar.business.dtos.car.GetCarCarDamageDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,5 +15,5 @@ public class ListCarDamageDto {
 	
 	private String carDamageInfo;
 	
-	private GetCarDto car;
+	private GetCarCarDamageDto car;
 }

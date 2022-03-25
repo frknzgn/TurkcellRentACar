@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateIndividualCustomerRequest {
 	
-	private int id;
+	private int individualCustomerId;
     private String email;
     private String password;
     private String firstName;
 	private String lastName;
+	private String individualCustomerNationalityId;
 }

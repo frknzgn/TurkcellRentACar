@@ -36,7 +36,7 @@ public class CityController {
 	}
 	
 	@PostMapping("/add")
-	public Result add(@RequestBody @Valid CreateCityRequest createCityRequest){
+	public Result add(CreateCityRequest createCityRequest){
 		
 		return this.cityService.add(createCityRequest);
 	

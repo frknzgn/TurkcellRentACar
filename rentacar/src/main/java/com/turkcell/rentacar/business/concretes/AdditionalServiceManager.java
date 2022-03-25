@@ -12,6 +12,7 @@ import com.turkcell.rentacar.business.dtos.additionalService.ListAdditionalServi
 import com.turkcell.rentacar.business.requests.addtionalService.CreateAdditonalServiceRequest;
 import com.turkcell.rentacar.business.requests.addtionalService.DeleteAdditonalServiceRequest;
 import com.turkcell.rentacar.business.requests.addtionalService.UpdateAdditonalServiceRequest;
+import com.turkcell.rentacar.core.constants.Messages;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.abstracts.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
@@ -33,7 +34,19 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		this.modelMapperService = modelMapperService;
 	}
 	
+	@Override
+	public Result add(CreateAdditonalServiceRequest createAdditonalServiceRequest) {
+		
+		checkAdditionalServiceExit(createAdditonalServiceRequest.getAdditionalServiceName());
+		
+		AdditionalService additionalService = this.modelMapperService.forRequest().map(createAdditonalServiceRequest, AdditionalService.class);
+		this.additionalServiceDao.save(additionalService);
+		
+		return new SuccessResult("AdditionalService.Added");
+		
+	}
 	
+
 	@Override
 	public DataResult<List<ListAdditionalServiceDto>> getall() throws BusinessException {
 		
@@ -47,31 +60,22 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 	}
 
 	@Override
-	public DataResult<GetAdditionalServiceDto> getById(int id) throws BusinessException {
+	public DataResult<GetAdditionalServiceDto> getById(int additionalServiceId) {
 		
-		checkIfIdExist(id);
+		checkAdditionalServiceNotExist(additionalServiceId);
 		
-		AdditionalService additionalService = this.additionalServiceDao.getById(id);
+		AdditionalService additionalService = this.additionalServiceDao.getByAdditionalServiceId(additionalServiceId);
 		GetAdditionalServiceDto response = this.modelMapperService.forDto().map(additionalService, GetAdditionalServiceDto.class);
 		
 		return new SuccessDataResult<GetAdditionalServiceDto>(response, "AdditionalService.Get");
 		
 	}
-
-	@Override
-	public Result add(CreateAdditonalServiceRequest createAdditonalServiceRequest) {
-
-		AdditionalService additionalService = this.modelMapperService.forRequest().map(createAdditonalServiceRequest, AdditionalService.class);
-		this.additionalServiceDao.save(additionalService);
-		
-		return new SuccessResult("AdditionalService.Added");
-		
-	}
+	
 
 	@Override
 	public Result update(UpdateAdditonalServiceRequest updateAdditonalServiceRequest) throws BusinessException {
 		
-		checkIfIdExist(updateAdditonalServiceRequest.getAdditionalServiceId());
+		checkAdditionalServiceNotExist(updateAdditonalServiceRequest.getAdditionalServiceId());
 		
 		AdditionalService additionalService = this.modelMapperService.forRequest().map(updateAdditonalServiceRequest, AdditionalService.class);
 		this.additionalServiceDao.save(additionalService);
@@ -79,25 +83,37 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		return new SuccessResult("AdditionalService.Updated");
 		
 	}
+	
 
 	@Override
 	public Result delete(DeleteAdditonalServiceRequest deleteAdditonalServiceRequest) throws BusinessException {
 		
-		checkIfIdExist(deleteAdditonalServiceRequest.getId());
+		checkAdditionalServiceNotExist(deleteAdditonalServiceRequest.getAdditionalServiceId());
 		
 		AdditionalService additionalService = this.modelMapperService.forRequest().map(deleteAdditonalServiceRequest, AdditionalService.class);
 		this.additionalServiceDao.delete(additionalService);
 		
 		return new SuccessResult("AdditionalService.Deleted");
-		
-	}
-
 	
-	private void checkIfIdExist(int additionalServiceId) throws BusinessException {
+	}
+	
+	
+	private void checkAdditionalServiceExit(String additionalServiceName) {
 		
-		if(this.additionalServiceDao.getById(additionalServiceId).equals(null)) {
+		List<AdditionalService> additionalServices = this.additionalServiceDao.findAll();
+		for (AdditionalService additionalService : additionalServices) {
+			if(additionalService.getAdditionalServiceName().toLowerCase().matches(additionalServiceName.toLowerCase())) {
+				
+				throw new BusinessException(Messages.ADDITIONALSERVICEEXİST);
+			}
+		}	
+	}
+	
+	private void checkAdditionalServiceNotExist(int additionalServiceId) {
+		
+		if(this.additionalServiceDao.getByAdditionalServiceId(additionalServiceId) == null) {
 			
-			throw new BusinessException("Id is Null.");
+			throw new BusinessException(Messages.ADDITIONALSERVICENOTEXİST);
 			
 		}
 	}

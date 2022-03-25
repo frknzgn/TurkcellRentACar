@@ -25,7 +25,7 @@ public class CarMaintenance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;//??
+	private int carMaintenanceId;//??
 	
 	@Column(name = "description")
 	private String description;

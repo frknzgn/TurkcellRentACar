@@ -19,13 +19,13 @@ public class ModelMapperManager implements ModelMapperService{
 
 	@Override
 	public ModelMapper forDto() {
-		this.modelMapper.getConfiguration().setAmbiguityIgnored(true).setMatchingStrategy(MatchingStrategies.LOOSE);
+		this.modelMapper.getConfiguration().setAmbiguityIgnored(true).setMatchingStrategy(MatchingStrategies.STANDARD);
 		return this.modelMapper;
 	}
 
 	@Override
 	public ModelMapper forRequest() {
-		this.modelMapper.getConfiguration().setAmbiguityIgnored(true).setMatchingStrategy(MatchingStrategies.STANDARD);
+		this.modelMapper.getConfiguration().setAmbiguityIgnored(true).setMatchingStrategy(MatchingStrategies.STRICT);
 		return this.modelMapper;
 	}
 

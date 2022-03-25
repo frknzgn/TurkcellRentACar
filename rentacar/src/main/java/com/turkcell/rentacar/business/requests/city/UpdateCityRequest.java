@@ -1,19 +1,22 @@
 package com.turkcell.rentacar.business.requests.city;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
-@Getter
-@Setter
-@ToString
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateCityRequest {
-
+	
+	@NotNull
+	@Positive
 	private int cityId;
+	
+	@NotNull
 	private String cityName;
 
 }

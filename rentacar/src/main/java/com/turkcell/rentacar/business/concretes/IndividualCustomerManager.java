@@ -11,6 +11,7 @@ import com.turkcell.rentacar.business.dtos.individualCustomer.ListIndividualCust
 import com.turkcell.rentacar.business.requests.individualCustomer.CreateIndividualCustomerRequest;
 import com.turkcell.rentacar.business.requests.individualCustomer.DeleteIndividualCustomerRequest;
 import com.turkcell.rentacar.business.requests.individualCustomer.UpdateIndividualCustomerRequest;
+import com.turkcell.rentacar.core.constants.Messages;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.abstracts.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
@@ -34,12 +35,19 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	
 	
 	@Override
-	public Result add(CreateIndividualCustomerRequest createIndividualCustomerRequest) throws BusinessException {
-
+	public Result add(CreateIndividualCustomerRequest createIndividualCustomerRequest) {
+		
+		checkCustomerExist(createIndividualCustomerRequest.getIndividualCustomerNationalityId());
+		checkEmailExist(createIndividualCustomerRequest.getEmail());
+		checkNationalityIdValid(createIndividualCustomerRequest.getIndividualCustomerNationalityId());
+		
 		IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(createIndividualCustomerRequest, IndividualCustomer.class);
 		this.individualCustomerDao.save(individualCustomer);
-		return new SuccessResult("Customer.Added.");
+		
+		return new SuccessResult(Messages.CUSTOMERADDED);
+		
 	}
+	
 
 	@Override
 	public DataResult<List<ListIndividualCustomerDto>> getall() {
@@ -49,39 +57,89 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 				 							map(customer->this.modelMapperService.forDto().
 				 								map(customer, ListIndividualCustomerDto.class)).collect(Collectors.toList());
 		 
-		 return new SuccessDataResult<List<ListIndividualCustomerDto>>(response, "IndividualCustomer.Listed");
+		 return new SuccessDataResult<List<ListIndividualCustomerDto>>(response, Messages.CUSTOMERLİSTED);
 		
 	}
 
 	@Override
-	public DataResult<GetIndividualCustomerDto> getById(int id) {
+	public DataResult<GetIndividualCustomerDto> getById(int individualCustomerId) {
 		
-		IndividualCustomer individualCustomer = this.individualCustomerDao.getById(id);
+		 checkCustomerNotExist(individualCustomerId);
 		
+		IndividualCustomer individualCustomer = this.individualCustomerDao.getById(individualCustomerId);
 		GetIndividualCustomerDto response = this.modelMapperService.forDto().map(individualCustomer, GetIndividualCustomerDto.class);
 		
-		return new SuccessDataResult<GetIndividualCustomerDto>(response, "Individual.Customer.Added.");
+		return new SuccessDataResult<GetIndividualCustomerDto>(response, Messages.CUSTOMERGETBYID);
 		
 	}
 
 	@Override
 	public Result update(UpdateIndividualCustomerRequest updateIndividualCustomerRequest) {
 		
-		IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(updateIndividualCustomerRequest, IndividualCustomer.class);
+		 checkCustomerNotExist(updateIndividualCustomerRequest.getIndividualCustomerId());
 		
+		IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(updateIndividualCustomerRequest, IndividualCustomer.class);		
 		this.individualCustomerDao.save(individualCustomer);
 		
-		return new SuccessResult("Individual.Customer.Updated");
+		return new SuccessResult(Messages.CUSTOMERUPDATED);
 		
 	}
 
 	@Override
-	public Result delete(DeleteIndividualCustomerRequest deleteIndividualCustomerRequest) throws BusinessException {
-		IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(deleteIndividualCustomerRequest, IndividualCustomer.class);
+	public Result delete(DeleteIndividualCustomerRequest deleteIndividualCustomerRequest) {
 		
+		 checkCustomerNotExist(deleteIndividualCustomerRequest.getIndividualCustomerId());
+		
+		IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(deleteIndividualCustomerRequest, IndividualCustomer.class);		
 		this.individualCustomerDao.delete(individualCustomer);
 		
-		return new SuccessResult("Individual.Customer.Deleted");
+		return new SuccessResult(Messages.CUSTOMERDELETED);
+	}
+	
+	
+	public final void checkCustomerExist(String individualCustomerNationalityId) {
+		
+		List<IndividualCustomer> individualCustomers = this.individualCustomerDao.findAll();
+		
+		for (IndividualCustomer individualCustomer : individualCustomers) {
+			if(individualCustomer.getIndividualCustomerNationalityId().matches(individualCustomerNationalityId)) {
+				
+				throw new BusinessException(Messages.CUSTOMEREXİST);
+				
+			}
+		}
+		
+	}
+	
+	private void checkNationalityIdValid(String individualCustomerNationalityId) {
+		
+		if(individualCustomerNationalityId.length() != 11 || individualCustomerNationalityId == null) {
+			
+			throw new BusinessException(Messages.NATIONALITYIDNOTVALID);
+		}
+		
+	}
+	
+	public final void checkCustomerNotExist(int customerId) {
+		
+		if(this.individualCustomerDao.getByCustomerId(customerId)==null) {
+			
+			throw new BusinessException(Messages.CUSTOMERNOTEXİST);
+		}
+	}
+	
+	public final void checkEmailExist(String email) {
+		
+		List<IndividualCustomer> individualCustomers = this.individualCustomerDao.findAll();
+		
+		for (IndividualCustomer individualCustomer : individualCustomers) {
+			if(individualCustomer.getEmail().toLowerCase().matches(email)) {
+				
+				throw new BusinessException(Messages.CUSTOMEREMAİLEXİST);
+				
+			}
+			
+		}
 	}
 
 }

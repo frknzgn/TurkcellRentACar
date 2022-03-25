@@ -32,7 +32,5 @@ public class CreateRentalRequest {
 	
 	private Set<CreateOrderedAdditionalServiceRequest> createOrderedAdditionalServiceRequests;
 	
-	private double rentTotalPrice;
-	
 	
 }

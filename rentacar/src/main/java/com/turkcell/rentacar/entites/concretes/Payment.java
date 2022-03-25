@@ -25,7 +25,7 @@ public class Payment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "payment_id")
-	private int id;
+	private int paymentId;
 	
 	@Column(name = "payment_date")
 	private LocalDate paymentDate;
@@ -38,7 +38,7 @@ public class Payment {
 	@JoinColumn(name = "invoice_id")
 	private Invoice paymentInvoice;
 	
-	@Column(name="card_owner_name")
+	@Column(name="card_holder_name")
 	private String cardHolder;
 	
 	@Column(name="card_number")

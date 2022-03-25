@@ -1,6 +1,8 @@
 package com.turkcell.rentacar.business.requests.individualCustomer;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,5 +26,9 @@ public class CreateIndividualCustomerRequest {
     //regex uygulanır.
     private String firstName;
 	private String lastName;
+	
+	@NotNull
+	@Pattern(regexp="\\d{6}")
+	private String individualCustomerNationalityId;
 	
 }

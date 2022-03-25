@@ -16,7 +16,7 @@ public interface AdditionalServiceService {
 	Result add(CreateAdditonalServiceRequest createAdditonalServiceRequest);
 	
 	DataResult<List<ListAdditionalServiceDto>> getall() throws BusinessException;
-	DataResult<GetAdditionalServiceDto> getById(int id) throws BusinessException;
+	DataResult<GetAdditionalServiceDto> getById(int additionalServiceId) ;
 	
 	Result update(UpdateAdditonalServiceRequest updateAdditonalServiceRequest) throws BusinessException;
 	
