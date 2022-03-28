@@ -37,7 +37,7 @@ public class CardDetailManager implements CardDetailService{
 		
 		CardDetail cardDetail = this.modelMapperService.forRequest().map(createCardDetailRequest, CardDetail.class);
 		this.cardDetailDao.save(cardDetail);
-		return new SuccessResult(Messages.CARDADDED);
+		return new SuccessResult(Messages.CARD_ADDED);
 		
 	}
 	
@@ -50,7 +50,7 @@ public class CardDetailManager implements CardDetailService{
 		List<ListCardDetailDto> response = result.stream().
 				map(cardDetail->this.modelMapperService.forDto().
 						map(cardDetail, ListCardDetailDto.class)).collect(Collectors.toList());
-		return new SuccessDataResult<List<ListCardDetailDto>>(response, Messages.CARDDETAİLSGET);
+		return new SuccessDataResult<List<ListCardDetailDto>>(response, Messages.CARD_DETAİLS_GET);
 		
 	}
 
@@ -62,7 +62,7 @@ public class CardDetailManager implements CardDetailService{
 				map(carDetail-> this.modelMapperService.forDto().
 						map(carDetail, ListCardDetailDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<ListCardDetailDto>>(response, Messages.CARDDETAİLGETBYCUSTOMERID);
+		return new SuccessDataResult<List<ListCardDetailDto>>(response, Messages.CARD_DETAİL_GETBY_CUSTOMERID);
 		
 	}
 	
@@ -73,7 +73,7 @@ public class CardDetailManager implements CardDetailService{
 		CardDetail cardDetail = this.modelMapperService.forRequest().map(updateCardDetailRequest, CardDetail.class);
 		this.cardDetailDao.save(cardDetail);
 		
-		return new SuccessResult(Messages.CARDDETAİLSUPDATED);
+		return new SuccessResult(Messages.CARD_DETAİLS_UPDATED);
 		
 	}
 
@@ -83,7 +83,7 @@ public class CardDetailManager implements CardDetailService{
 		CardDetail cardDetail = this.modelMapperService.forRequest().map(deleteCardDetailRequest, CardDetail.class);
 		this.cardDetailDao.delete(cardDetail);
 		
-		return new SuccessResult(Messages.CARDDETAİLDELETED);
+		return new SuccessResult(Messages.CARD_DETAİL_DELETED);
 		
 	}
 	

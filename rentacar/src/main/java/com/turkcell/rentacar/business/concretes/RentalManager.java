@@ -49,14 +49,14 @@ public class RentalManager implements RentalService{
 		
 	}
 	
-	
+	//@ElementCollection(fetch = FetchType.LAZY)
 	@Override
 	public Result add(CreateRentalRequest createRentalRequest) throws BusinessException {
 		
-		checkIfCarIsInMaintenance(createRentalRequest.getCarId());
 	
 		Rental rental = this.modelMapperService.forRequest().map(createRentalRequest, Rental.class);
 		
+		checkIfCarIsInMaintenance(rental.getRentalId());
 		int CarRentMilage = this.modelMapperService.forDto().map(this.carService.getByCarId(createRentalRequest.getCarId()), Car.class).getMilage();
 		rental.setRentMilage(CarRentMilage);
 		
@@ -64,7 +64,7 @@ public class RentalManager implements RentalService{
 		
 		rental.setRentalTotalPrice(calRentedTotal(rental.getRentalId()));
 		
-		return new SuccessResult("Rental.Created");
+		return new SuccessResult(Messages.RENTAL_ADDED);
 		
 	}
 	
@@ -75,7 +75,7 @@ public class RentalManager implements RentalService{
 		var result = this.rentalDao.findAll();
 		List<ListRentalDto> response = result.stream().map(rental->this.modelMapperService.forDto().map(rental, ListRentalDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<ListRentalDto>>(response, "Rental.Listed");
+		return new SuccessDataResult<List<ListRentalDto>>(response, Messages.RENTAL_LISTED);
 		
 	}
 	
@@ -87,7 +87,7 @@ public class RentalManager implements RentalService{
 		Rental result = this.rentalDao.getById(rentalId);
 		GetRentalDto response = this.modelMapperService.forDto().map(result, GetRentalDto.class);
 		
-		return new SuccessDataResult<GetRentalDto>(response,"Rental.GetById");
+		return new SuccessDataResult<GetRentalDto>(response,Messages.RENTAL_GETBY_ID);
 		
 	}
 	
@@ -96,12 +96,12 @@ public class RentalManager implements RentalService{
 		
 		checkIfCarExist(carId);
 		
-		List<Rental> result = this.rentalDao.getByCar_Id(carId);
+		List<Rental> result = this.rentalDao.getByCar_CarId(carId);
         List<ListRentalDto> response = result.stream()
                 				.map(rentCar -> this.modelMapperService.forDto().
                 						map(rentCar, ListRentalDto.class)).collect(Collectors.toList());
         
-        return new SuccessDataResult<List<ListRentalDto>>(response, "Rental.Listed");
+        return new SuccessDataResult<List<ListRentalDto>>(response, Messages.RENTAL_GETBY_CAR_ID);
         
 	}
 
@@ -116,7 +116,7 @@ public class RentalManager implements RentalService{
 		
 		updateRentCarReturnMilage(updateRentalRequest.getRentalId(), updateRentalRequest.getRentReturnMilage());
 		
-		return new SuccessResult("Rental.Added");
+		return new SuccessResult(Messages.RENTAL_UPDATED);
 		
 	}
 
@@ -129,7 +129,7 @@ public class RentalManager implements RentalService{
 		Rental rental = this.modelMapperService.forRequest().map(deleteRentalRequest, Rental.class);
 		this.rentalDao.delete(rental);
 		
-		return new SuccessResult("Rental.Deleted");
+		return new SuccessResult(Messages.RENTAL_DELETED);
 		
 	}
 	
@@ -139,8 +139,8 @@ public class RentalManager implements RentalService{
 		 List<ListCarMaintenanceDto> maintenances = this.carMaintenanceService.getByCarId(carId).getData();
 	         
 		 for (ListCarMaintenanceDto listCarMaintenanceDtos : maintenances) {
-			if(listCarMaintenanceDtos.getReturnDate().equals(null)) {
-				throw new BusinessException(Messages.CARINMAİNTENANCE);
+			if(listCarMaintenanceDtos.getMaintenanceReturnDate().equals(null)) {
+				throw new BusinessException(Messages.CAR_IN_MAİNTENANCE);
 			}
 		}
 	        
@@ -148,7 +148,7 @@ public class RentalManager implements RentalService{
 	 
 	private void checkIfRentExists(int rentalId) throws BusinessException {
 	        if (!rentalDao.existsById(rentalId)){
-	            throw new BusinessException(Messages.RENTNOTEXİST);
+	            throw new BusinessException(Messages.RENT_NOT_EXİST);
 	        }
 	        
 	}
@@ -167,7 +167,7 @@ public class RentalManager implements RentalService{
 
         double carDailyPrice = rental.getCar().getDailyPrice();
 
-        double OrderedAdditionalServicesDailyPrice = this.orderedAdditionalServiceService.calDailyTotal(rental.getOrderedAdditionalServices());
+        double OrderedAdditionalServicesDailyPrice = this.orderedAdditionalServiceService.calculateAdditionalServiceCost(rental.getOrderedAdditionalServices());
 
         double dailyTotal = carDailyPrice + OrderedAdditionalServicesDailyPrice;
 
@@ -189,7 +189,7 @@ public class RentalManager implements RentalService{
     private Result updateRentCarReturnMilage(int rentalId,int rentReturnMilage) {
     	
     	this.rentalDao.getById(rentalId).getCar().setMilage(rentReturnMilage);    	
-    	return new SuccessResult(Messages.CARMİLAGEUPDATED);
+    	return new SuccessResult(Messages.CAR_MİLAGE_UPDATED);
     	
     	
     }

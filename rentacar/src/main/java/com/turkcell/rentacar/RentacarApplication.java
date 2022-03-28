@@ -54,12 +54,8 @@ public class RentacarApplication {
 		 ErrorResult errorResult = new ErrorResult(businessException.getMessage());
 		 return errorResult;
 	 }
-	 
-	 
-	 
+	 	 
 }
-
-
 
 //City isim null kaydetme.
 //Business Logic kısımları

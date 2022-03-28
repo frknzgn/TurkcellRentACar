@@ -1,7 +1,6 @@
 package com.turkcell.rentacar.business.abstracts;
 
 import java.util.List;
-import java.util.Set;
 
 import com.turkcell.rentacar.business.dtos.orderedadditionalservice.GetOrderedAdditionalServiceDto;
 import com.turkcell.rentacar.business.dtos.orderedadditionalservice.ListOrderedAdditionalServiceDto;
@@ -24,5 +23,5 @@ public interface OrderedAdditionalServiceService {
 	
 	Result delete(DeleteOrderedAdditionalServiceRequest deleteOrderedAdditonalServiceRequest) throws BusinessException;
 	
-	Double calDailyTotal(Set<OrderedAdditionalService> orderedAdditionalServices);
+	Double calculateAdditionalServiceCost(List<OrderedAdditionalService> orderedAdditionalServices);
 }

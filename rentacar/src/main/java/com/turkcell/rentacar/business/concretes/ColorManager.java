@@ -43,7 +43,7 @@ public class ColorManager implements ColorService {
 		Color color = this.modelMapperService.forRequest().map(createColorRequest,Color.class);
 		this.colorDao.save(color);
 		
-		return new SuccessResult(Messages.COLORADDED);
+		return new SuccessResult(Messages.COLOR_ADDED);
 		
 	}
 	
@@ -55,7 +55,7 @@ public class ColorManager implements ColorService {
 		List<ListColorDto> response = result.stream()
 						.map(color -> this.modelMapperService.forDto()
 								.map(color,ListColorDto.class)).collect(Collectors.toList());			
-		return new SuccessDataResult<List<ListColorDto>>(response, Messages.COLORSLİSTED);
+		return new SuccessDataResult<List<ListColorDto>>(response, Messages.COLORS_LİSTED);
 		
 	}
 
@@ -67,7 +67,7 @@ public class ColorManager implements ColorService {
 		Color result = this.colorDao.getByColorId(colorId);
 		GetColorDto response = this.modelMapperService.forDto().map(result, GetColorDto.class);
 		
-		return new SuccessDataResult<GetColorDto>(response, Messages.COLORGETBYID);
+		return new SuccessDataResult<GetColorDto>(response, Messages.COLOR_GETBY_ID);
 		
 	}
 	
@@ -80,7 +80,7 @@ public class ColorManager implements ColorService {
 		Color color = this.modelMapperService.forRequest().map(updateColorRequest, Color.class);
 		this.colorDao.save(color);
 		
-		return new SuccessResult(Messages.COLORUPTADED);
+		return new SuccessResult(Messages.COLOR_UPTADED);
 		
 	}
 
@@ -92,7 +92,7 @@ public class ColorManager implements ColorService {
 		Color color = this.modelMapperService.forRequest().map(deleteColorRequest, Color.class);
 		this.colorDao.delete(color);
 		
-		return new SuccessResult(Messages.COLORDELETED);
+		return new SuccessResult(Messages.COLOR_DELETED);
 		
 	}
 	
@@ -100,7 +100,7 @@ public class ColorManager implements ColorService {
 		
 		if(this.colorDao.getByColorId(colorId)==null) {
 			
-			throw new BusinessException(Messages.COLORNOTEXİST);
+			throw new BusinessException(Messages.COLOR_NOT_EXİST);
 			
 		}
 		
@@ -113,7 +113,7 @@ public class ColorManager implements ColorService {
 		for (Color color : colors) {
 			if(color.getColorName().toLowerCase().matches(colorName.toLowerCase())) {
 				
-				throw new BusinessException(Messages.COLOREXİST);
+				throw new BusinessException(Messages.COLOR_EXİST);
 				
 			}
 		}

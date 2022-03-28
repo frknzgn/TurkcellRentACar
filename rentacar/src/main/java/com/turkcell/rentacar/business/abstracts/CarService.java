@@ -29,4 +29,5 @@ public interface CarService {
 	
 	Result delete(DeleteCarRequest deleteCarRequest) throws BusinessException;
 	
+	void checkCarExist(int carId);
 }

@@ -22,7 +22,7 @@ public class CarDamage {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "car_damage_id", nullable = false)
+	@Column(name = "car_damage_id")
 	private int carDamageId;
 	
 	@Column(name = "car_damage_info")

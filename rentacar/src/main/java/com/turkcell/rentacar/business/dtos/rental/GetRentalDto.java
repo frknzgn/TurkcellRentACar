@@ -13,7 +13,7 @@ public class GetRentalDto {
 	
 	private int rentalId;
 	private int carId;
-	private int userId;
+	private int customerId;
 	private LocalDate rentDate;
 	private LocalDate returnDate;
 	

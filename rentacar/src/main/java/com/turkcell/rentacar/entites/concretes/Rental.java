@@ -1,7 +1,7 @@
 package com.turkcell.rentacar.entites.concretes;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -67,7 +67,7 @@ public class Rental {
 	
 	@OneToMany(mappedBy = "rental", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
-    private Set<OrderedAdditionalService> orderedAdditionalServices;
+    private List<OrderedAdditionalService> orderedAdditionalServices;
 	
 	@OneToOne(mappedBy = "rental")
 	private Invoice invoice;

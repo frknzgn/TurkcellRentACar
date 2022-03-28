@@ -44,7 +44,7 @@ public class CityManager implements CityService{
 		City city = this.modelMapperService.forRequest().map(createCityRequest, City.class);
 		this.cityDao.save(city);
 		
-		return new SuccessResult(Messages.CİTYADDED);
+		return new SuccessResult(Messages.CİTY_ADDED);
 		
 	}
 
@@ -57,7 +57,7 @@ public class CityManager implements CityService{
 							map(city-> this.modelMapperService.forDto().
 									map(city, ListCityDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<ListCityDto>>(response, "City.Listed.");
+		return new SuccessDataResult<List<ListCityDto>>(response, Messages.CITY_LISTED);
 		
 	}
 	
@@ -70,7 +70,7 @@ public class CityManager implements CityService{
 		City city = this.modelMapperService.forRequest().map(updateCityRequest, City.class);
 		this.cityDao.save(city);
 		
-		return new SuccessResult("City.Updated.");
+		return new SuccessResult(Messages.CITY_UPDATED);
 		
 	}
 	
@@ -83,7 +83,7 @@ public class CityManager implements CityService{
 		City city = this.modelMapperService.forRequest().map(deleteCityRequest, City.class);
 		this.cityDao.delete(city);
 		
-		return new SuccessResult("City.Deleted");
+		return new SuccessResult(Messages.CİTY_DELETED);
 		
 	}
 	
@@ -95,7 +95,7 @@ public class CityManager implements CityService{
 		for (City city : cities ) {
 			if(city.getCityName().toLowerCase().matches(cityName.toLowerCase())) {
 				
-				throw new BusinessException(Messages.CİTYEXİST);
+				throw new BusinessException(Messages.CİTY_EXİST);
 				
 			}
 		}
@@ -106,7 +106,7 @@ public class CityManager implements CityService{
 		
 		if(this.cityDao.getByCityId(cityId)==null) {
 			
-			throw new BusinessException(Messages.CİTYNOTEXİST);
+			throw new BusinessException(Messages.CİTY_NOT_EXİST);
 			
 		}
 	}

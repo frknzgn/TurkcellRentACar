@@ -45,7 +45,7 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 		CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(createCorporateCustomerRequest, CorporateCustomer.class);
 		this.corporateCustomerDao.save(corporateCustomer);
 		
-		return new SuccessResult(Messages.CUSTOMERADDED);
+		return new SuccessResult(Messages.CUSTOMER_ADDED);
 		
 	}
 	
@@ -58,7 +58,7 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 										map(customer->this.modelMapperService.forDto().
 										map(customer, ListCorporateCustomerDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<ListCorporateCustomerDto>>(response,Messages.CUSTOMERLİSTED);
+		return new SuccessDataResult<List<ListCorporateCustomerDto>>(response,Messages.CUSTOMER_LİSTED);
 		
 	}
 
@@ -70,7 +70,7 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 		CorporateCustomer result = this.corporateCustomerDao.getById(id);		
 		GetCorporateCustomerDto response = this.modelMapperService.forDto().map(result, GetCorporateCustomerDto.class);
 		
-		return new SuccessDataResult<GetCorporateCustomerDto>(response, Messages.CUSTOMERLİSTED);
+		return new SuccessDataResult<GetCorporateCustomerDto>(response, Messages.CUSTOMER_GETBY_ID);
 	}
 	
 
@@ -82,7 +82,7 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 		CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(updateCustomerRequest, CorporateCustomer.class);		
 		this.corporateCustomerDao.save(corporateCustomer);
 		
-		return new SuccessResult(Messages.CUSTOMERUPDATED);
+		return new SuccessResult(Messages.CUSTOMER_UPDATED);
 		
 	}
 	
@@ -95,7 +95,7 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 		CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(deleteCorporateCustomerRequest, CorporateCustomer.class);		
 		this.corporateCustomerDao.delete(corporateCustomer);
 		
-		return new SuccessResult(Messages.CUSTOMERDELETED);
+		return new SuccessResult(Messages.CUSTOMER_DELETED);
 		
 	}
 	
@@ -106,7 +106,7 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 		for (CorporateCustomer corporateCustomer : corporateCustomers) {
 			if(corporateCustomer.getEmail().toLowerCase().matches(email)) {
 				
-				throw new BusinessException(Messages.CUSTOMEREMAİLEXİST);
+				throw new BusinessException(Messages.CUSTOMER_EMAİL_EXİST);
 				
 			}
 			
@@ -120,7 +120,7 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 		for (CorporateCustomer corporateCustomer : corporateCustomers) {
 			if(corporateCustomer.getTaxNumber() == taxNumber) {
 				
-				throw new BusinessException(Messages.CUSTOMEREXİST);
+				throw new BusinessException(Messages.CUSTOMER_EXİST);
 				
 			}
 		}
@@ -131,7 +131,7 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 		
 		if(this.corporateCustomerDao.getByCustomerId(customerId)==null) {
 			
-			throw new BusinessException(Messages.CUSTOMERNOTEXİST);
+			throw new BusinessException(Messages.CUSTOMER_NOT_EXİST);
 			
 		}
 		

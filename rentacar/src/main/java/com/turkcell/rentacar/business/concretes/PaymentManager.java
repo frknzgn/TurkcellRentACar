@@ -47,7 +47,7 @@ public class PaymentManager implements PaymentService {
 		
 		this.paymentDao.save(payment);
 		
-		return new SuccessResult(Messages.PAYMENTADDED);
+		return new SuccessResult(Messages.PAYMENT_ADDED);
 		
 	}
 	
@@ -60,7 +60,7 @@ public class PaymentManager implements PaymentService {
 				map(payment -> this.modelMapperService.forDto().
 						map(payment, ListPaymentDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<ListPaymentDto>>(response,Messages.PAYMENTGETALL);
+		return new SuccessDataResult<List<ListPaymentDto>>(response,Messages.PAYMENT_GETALL);
 	}
 	
 	@Override
@@ -71,7 +71,7 @@ public class PaymentManager implements PaymentService {
 		Payment result = this.paymentDao.getById(paymentId);
 		GetPaymentDto response = this.modelMapperService.forDto().map(result, GetPaymentDto.class);
 		
-		return new SuccessDataResult<GetPaymentDto>(response);
+		return new SuccessDataResult<GetPaymentDto>(response,Messages.PAYMENT_GETBY_ID);
 		
 	}
 	
@@ -89,14 +89,14 @@ public class PaymentManager implements PaymentService {
 			return true;
 		}
 		
-		throw new BusinessException("Bu kiralamanın ödemesi yapılmıştır.");
+		throw new BusinessException(Messages.RENTS_PAYMENT_PAYED);
 	}
 
 	private void checkPaymentExist(int paymentId) {
 		
 		if (this.paymentDao.getById(paymentId).equals(null)) {
 			
-			throw new BusinessException(Messages.NOTEXİST);
+			throw new BusinessException(Messages.PAYMENT_NOT_EXİST);
 			
 		}
 		

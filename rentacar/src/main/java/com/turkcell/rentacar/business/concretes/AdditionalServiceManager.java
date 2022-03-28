@@ -42,7 +42,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		AdditionalService additionalService = this.modelMapperService.forRequest().map(createAdditonalServiceRequest, AdditionalService.class);
 		this.additionalServiceDao.save(additionalService);
 		
-		return new SuccessResult("AdditionalService.Added");
+		return new SuccessResult(Messages.ADDITIONAL_SERVİCE_ADDED);
 		
 	}
 	
@@ -55,7 +55,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 					map(service->this.modelMapperService.forDto().
 						map(service, ListAdditionalServiceDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<ListAdditionalServiceDto>>(response, "AdditionalService.Listed");
+		return new SuccessDataResult<List<ListAdditionalServiceDto>>(response, Messages.ADDITIONAL_SERVİCE_LISTED);
 		
 	}
 
@@ -67,7 +67,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		AdditionalService additionalService = this.additionalServiceDao.getByAdditionalServiceId(additionalServiceId);
 		GetAdditionalServiceDto response = this.modelMapperService.forDto().map(additionalService, GetAdditionalServiceDto.class);
 		
-		return new SuccessDataResult<GetAdditionalServiceDto>(response, "AdditionalService.Get");
+		return new SuccessDataResult<GetAdditionalServiceDto>(response, Messages.ADDITIONAL_SERVİCE_GETBY_ID);
 		
 	}
 	
@@ -80,7 +80,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		AdditionalService additionalService = this.modelMapperService.forRequest().map(updateAdditonalServiceRequest, AdditionalService.class);
 		this.additionalServiceDao.save(additionalService);
 		
-		return new SuccessResult("AdditionalService.Updated");
+		return new SuccessResult(Messages.ADDITIONAL_SERVİCE_UPDATED);
 		
 	}
 	
@@ -93,7 +93,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		AdditionalService additionalService = this.modelMapperService.forRequest().map(deleteAdditonalServiceRequest, AdditionalService.class);
 		this.additionalServiceDao.delete(additionalService);
 		
-		return new SuccessResult("AdditionalService.Deleted");
+		return new SuccessResult(Messages.ADDITIONAL_SERVİCE_DELETED);
 	
 	}
 	
@@ -104,7 +104,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		for (AdditionalService additionalService : additionalServices) {
 			if(additionalService.getAdditionalServiceName().toLowerCase().matches(additionalServiceName.toLowerCase())) {
 				
-				throw new BusinessException(Messages.ADDITIONALSERVICEEXİST);
+				throw new BusinessException(Messages.ADDITIONAL_SERVICE_EXİST);
 			}
 		}	
 	}
@@ -113,7 +113,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		
 		if(this.additionalServiceDao.getByAdditionalServiceId(additionalServiceId) == null) {
 			
-			throw new BusinessException(Messages.ADDITIONALSERVICENOTEXİST);
+			throw new BusinessException(Messages.ADDITIONAL_SERVICE_NOT_EXİST);
 			
 		}
 	}

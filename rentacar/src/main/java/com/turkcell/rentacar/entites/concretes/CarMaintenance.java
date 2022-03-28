@@ -25,16 +25,16 @@ public class CarMaintenance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int carMaintenanceId;//??
+	private int carMaintenanceId;
 	
 	@Column(name = "description")
-	private String description;
+	private String maintenanceDescription;
 	
 	@Column(name = "drop_date")
-	private LocalDate dropDate;//??
+	private LocalDate maintenanceDropDate;
 	
 	@Column(name = "return_date")
-	private LocalDate returnDate;
+	private LocalDate maintenanceReturnDate;
 	
 	@ManyToOne
 	@JoinColumn(name = "car_id")

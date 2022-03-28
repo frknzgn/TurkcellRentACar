@@ -44,7 +44,7 @@ public class BrandManager implements BrandService{
 		Brand brand = this.modelMapperService.forRequest().map(createBrandRequest,Brand.class);
 		this.brandDao.save(brand);
 		
-		return new SuccessResult(Messages.BRANDADDED);
+		return new SuccessResult(Messages.BRAND_ADDED);
 		
 	}
 	
@@ -57,7 +57,7 @@ public class BrandManager implements BrandService{
 							.map(brand -> this.modelMapperService.forDto()
 									.map(brand,ListBrandDto.class)).collect(Collectors.toList());
 				
-		return new SuccessDataResult<List<ListBrandDto>>(response, Messages.BRANDLİSTED);
+		return new SuccessDataResult<List<ListBrandDto>>(response, Messages.BRAND_LİSTED);
 		
 	}
 	
@@ -69,7 +69,7 @@ public class BrandManager implements BrandService{
 		var result = this.brandDao.getByBrandId(brandId);
 		GetBrandDto response = this.modelMapperService.forDto().map(result,GetBrandDto.class);
 		
-		return new SuccessDataResult<GetBrandDto>(response, Messages.BRANDGETBYID);
+		return new SuccessDataResult<GetBrandDto>(response, Messages.BRAND_GETBY_ID);
 		
 	}
 	
@@ -83,7 +83,7 @@ public class BrandManager implements BrandService{
 		Brand brand = this.modelMapperService.forRequest().map(updateBrandRequest,Brand.class);
 		this.brandDao.save(brand);
 		
-		return new SuccessResult(Messages.BRANDUPTADED);
+		return new SuccessResult(Messages.BRAND_UPTADED);
 		
 	}
 	
@@ -95,7 +95,7 @@ public class BrandManager implements BrandService{
 		
 		Brand brand = this.modelMapperService.forRequest().map(deleteBrandRequest, Brand.class);
 		this.brandDao.delete(brand);
-		return new SuccessResult(Messages.BRANDDELETED);
+		return new SuccessResult(Messages.BRAND_DELETED);
 		
 	}
 	
@@ -103,7 +103,7 @@ public class BrandManager implements BrandService{
 		
 		if(this.brandDao.getByBrandId(brandId) == null) {
 			
-			throw new BusinessException(Messages.BRANDNOTEXİST);
+			throw new BusinessException(Messages.BRAND_NOT_EXİST);
 			
 		}
 		
@@ -116,7 +116,7 @@ public class BrandManager implements BrandService{
 		for (Brand brand : brands) {
 			if(brand.getBrandName().toLowerCase().matches(brandName.toLowerCase())) {
 				
-				throw new BusinessException(Messages.BRANDEXİST);
+				throw new BusinessException(Messages.BRAND_EXİST);
 				
 			}
 		}		

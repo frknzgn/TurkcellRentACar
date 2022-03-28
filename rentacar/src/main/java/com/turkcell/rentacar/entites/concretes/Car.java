@@ -1,11 +1,10 @@
 package com.turkcell.rentacar.entites.concretes;
 
 import java.util.List;
-import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,7 +27,7 @@ public class Car  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "car_id")
-	private int id;
+	private int carId;
 	
 	@Column(name = "daily_price")
 	private double dailyPrice;
@@ -56,7 +55,7 @@ public class Car  {
 	@OneToMany(mappedBy = "car")
 	private List<Rental> rentals;
 	
-	@OneToMany(mappedBy = "car" , fetch = FetchType.EAGER)
-	private Set<CarDamage> carDamages;
+	@OneToMany(mappedBy = "car",cascade = CascadeType.ALL)
+	private List<CarDamage> carDamages;
 
 }

@@ -44,7 +44,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(createIndividualCustomerRequest, IndividualCustomer.class);
 		this.individualCustomerDao.save(individualCustomer);
 		
-		return new SuccessResult(Messages.CUSTOMERADDED);
+		return new SuccessResult(Messages.CUSTOMER_ADDED);
 		
 	}
 	
@@ -57,7 +57,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 				 							map(customer->this.modelMapperService.forDto().
 				 								map(customer, ListIndividualCustomerDto.class)).collect(Collectors.toList());
 		 
-		 return new SuccessDataResult<List<ListIndividualCustomerDto>>(response, Messages.CUSTOMERLİSTED);
+		 return new SuccessDataResult<List<ListIndividualCustomerDto>>(response, Messages.CUSTOMER_LİSTED);
 		
 	}
 
@@ -69,7 +69,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		IndividualCustomer individualCustomer = this.individualCustomerDao.getById(individualCustomerId);
 		GetIndividualCustomerDto response = this.modelMapperService.forDto().map(individualCustomer, GetIndividualCustomerDto.class);
 		
-		return new SuccessDataResult<GetIndividualCustomerDto>(response, Messages.CUSTOMERGETBYID);
+		return new SuccessDataResult<GetIndividualCustomerDto>(response, Messages.CUSTOMER_GETBY_ID);
 		
 	}
 
@@ -81,7 +81,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(updateIndividualCustomerRequest, IndividualCustomer.class);		
 		this.individualCustomerDao.save(individualCustomer);
 		
-		return new SuccessResult(Messages.CUSTOMERUPDATED);
+		return new SuccessResult(Messages.CUSTOMER_UPDATED);
 		
 	}
 
@@ -93,7 +93,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(deleteIndividualCustomerRequest, IndividualCustomer.class);		
 		this.individualCustomerDao.delete(individualCustomer);
 		
-		return new SuccessResult(Messages.CUSTOMERDELETED);
+		return new SuccessResult(Messages.CUSTOMER_DELETED);
 	}
 	
 	
@@ -104,7 +104,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		for (IndividualCustomer individualCustomer : individualCustomers) {
 			if(individualCustomer.getIndividualCustomerNationalityId().matches(individualCustomerNationalityId)) {
 				
-				throw new BusinessException(Messages.CUSTOMEREXİST);
+				throw new BusinessException(Messages.CUSTOMER_EXİST);
 				
 			}
 		}
@@ -115,7 +115,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		
 		if(individualCustomerNationalityId.length() != 11 || individualCustomerNationalityId == null) {
 			
-			throw new BusinessException(Messages.NATIONALITYIDNOTVALID);
+			throw new BusinessException(Messages.NATIONALITY_ID_NOT_VALID);
 		}
 		
 	}
@@ -124,7 +124,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		
 		if(this.individualCustomerDao.getByCustomerId(customerId)==null) {
 			
-			throw new BusinessException(Messages.CUSTOMERNOTEXİST);
+			throw new BusinessException(Messages.CUSTOMER_NOT_EXİST);
 		}
 	}
 	
@@ -135,7 +135,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		for (IndividualCustomer individualCustomer : individualCustomers) {
 			if(individualCustomer.getEmail().toLowerCase().matches(email)) {
 				
-				throw new BusinessException(Messages.CUSTOMEREMAİLEXİST);
+				throw new BusinessException(Messages.CUSTOMER_EMAİL_EXİST);
 				
 			}
 			
