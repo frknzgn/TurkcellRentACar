@@ -11,7 +11,7 @@ import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 
-public interface CorporateCustomerService extends CustomerService {
+public interface CorporateCustomerService {
 	
 	Result add(CreateCorporateCustomerRequest createCorporateCustomerRequest) throws BusinessException;
 	
@@ -21,5 +21,7 @@ public interface CorporateCustomerService extends CustomerService {
 	Result update(UpdateCorporateCustomerRequest updateCustomerRequest);
 	
 	Result delete(DeleteCorporateCustomerRequest deleteCorporateCustomerRequest) throws BusinessException;
+	
+	void checkIfCorporateCustomerIdExists(int corporateCustomerId) throws BusinessException;
 
 }

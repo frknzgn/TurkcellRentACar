@@ -1,5 +1,8 @@
 package com.turkcell.rentacar.business.requests.addtionalService;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,9 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateAdditonalServiceRequest {
 	
-	
+	@NotNull
+    @Min(1)
 	private String additionalServiceName;
-	private String additionalServiceDescription;
+	
+	@NotNull
 	private double additionalServicePrice;
 	
 	

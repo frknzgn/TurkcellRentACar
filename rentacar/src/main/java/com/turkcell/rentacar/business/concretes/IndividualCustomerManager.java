@@ -37,9 +37,8 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	@Override
 	public Result add(CreateIndividualCustomerRequest createIndividualCustomerRequest) {
 		
-		checkCustomerExist(createIndividualCustomerRequest.getIndividualCustomerNationalityId());
 		checkEmailExist(createIndividualCustomerRequest.getEmail());
-		checkNationalityIdValid(createIndividualCustomerRequest.getIndividualCustomerNationalityId());
+		checkNationalityIdValid(createIndividualCustomerRequest.getNationalityId());
 		
 		IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(createIndividualCustomerRequest, IndividualCustomer.class);
 		this.individualCustomerDao.save(individualCustomer);
@@ -53,6 +52,9 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	public DataResult<List<ListIndividualCustomerDto>> getall() {
 		
 		var result = this.individualCustomerDao.findAll();
+		
+		System.out.println(result);
+		
 		 List<ListIndividualCustomerDto> response = result.stream().
 				 							map(customer->this.modelMapperService.forDto().
 				 								map(customer, ListIndividualCustomerDto.class)).collect(Collectors.toList());
@@ -64,7 +66,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	@Override
 	public DataResult<GetIndividualCustomerDto> getById(int individualCustomerId) {
 		
-		 checkCustomerNotExist(individualCustomerId);
+		checkIfIndividualCustomerIdExists(individualCustomerId);
 		
 		IndividualCustomer individualCustomer = this.individualCustomerDao.getById(individualCustomerId);
 		GetIndividualCustomerDto response = this.modelMapperService.forDto().map(individualCustomer, GetIndividualCustomerDto.class);
@@ -76,7 +78,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	@Override
 	public Result update(UpdateIndividualCustomerRequest updateIndividualCustomerRequest) {
 		
-		 checkCustomerNotExist(updateIndividualCustomerRequest.getIndividualCustomerId());
+		checkIfIndividualCustomerIdExists(updateIndividualCustomerRequest.getCustomerId());
 		
 		IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(updateIndividualCustomerRequest, IndividualCustomer.class);		
 		this.individualCustomerDao.save(individualCustomer);
@@ -88,7 +90,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	@Override
 	public Result delete(DeleteIndividualCustomerRequest deleteIndividualCustomerRequest) {
 		
-		 checkCustomerNotExist(deleteIndividualCustomerRequest.getIndividualCustomerId());
+		 checkCustomerNotExist(deleteIndividualCustomerRequest.getCustomerId());
 		
 		IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(deleteIndividualCustomerRequest, IndividualCustomer.class);		
 		this.individualCustomerDao.delete(individualCustomer);
@@ -97,23 +99,9 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	}
 	
 	
-	public final void checkCustomerExist(String individualCustomerNationalityId) {
+	private void checkNationalityIdValid(Long individualCustomerNationalityId) {
 		
-		List<IndividualCustomer> individualCustomers = this.individualCustomerDao.findAll();
-		
-		for (IndividualCustomer individualCustomer : individualCustomers) {
-			if(individualCustomer.getIndividualCustomerNationalityId().matches(individualCustomerNationalityId)) {
-				
-				throw new BusinessException(Messages.CUSTOMER_EXİST);
-				
-			}
-		}
-		
-	}
-	
-	private void checkNationalityIdValid(String individualCustomerNationalityId) {
-		
-		if(individualCustomerNationalityId.length() != 11 || individualCustomerNationalityId == null) {
+		if(individualCustomerNationalityId.toString().length() != 11 || individualCustomerNationalityId == null) {
 			
 			throw new BusinessException(Messages.NATIONALITY_ID_NOT_VALID);
 		}
@@ -122,7 +110,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	
 	public final void checkCustomerNotExist(int customerId) {
 		
-		if(this.individualCustomerDao.getByCustomerId(customerId)==null) {
+		if(this.individualCustomerDao.getById(customerId)==null) {
 			
 			throw new BusinessException(Messages.CUSTOMER_NOT_EXİST);
 		}
@@ -140,6 +128,17 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 			}
 			
 		}
+	}
+
+
+	@Override
+	public void checkIfIndividualCustomerIdExists(int IndividualCustomerId) throws BusinessException {
+		
+		if(!this.individualCustomerDao.existsById(IndividualCustomerId)) {
+			
+			throw new BusinessException(Messages.CUSTOMER_NOT_EXİST);
+		}
+		
 	}
 
 }

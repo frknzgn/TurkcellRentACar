@@ -2,6 +2,7 @@ package com.turkcell.rentacar.entites.concretes;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name="brands")
 public class Brand {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="brand_id")
@@ -28,6 +30,8 @@ public class Brand {
 	@Column(name="brand_name")
 	private String brandName;
 	
-	@OneToMany
+	
+	@OneToMany(mappedBy = "brand")
 	private List<Car> cars;
+	
 }

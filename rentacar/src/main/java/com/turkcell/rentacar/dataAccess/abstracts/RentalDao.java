@@ -10,8 +10,12 @@ import com.turkcell.rentacar.entites.concretes.Rental;
 @Repository
 public interface RentalDao extends JpaRepository<Rental, Integer>{
 	
-	List<Rental> getByCar_CarId(int carId);
-	
-	List<Rental> findByCustomer_CustomerId(int customerId);
+	List<Rental> getRentalByCar_CarId(int carId);
+
+    Rental getRentalByCar_CarIdAndRentReturnDateIsNull(int carId);
+
+    boolean existsByRentalId(int renalId);
+
+    List<Rental> getRentalByCar_CarIdOrderByRentalIdDesc(int carId);
 
 }

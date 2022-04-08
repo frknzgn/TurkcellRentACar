@@ -30,13 +30,16 @@ public class CarMaintenance {
 	@Column(name = "description")
 	private String maintenanceDescription;
 	
+	
 	@Column(name = "drop_date")
 	private LocalDate maintenanceDropDate;
 	
 	@Column(name = "return_date")
 	private LocalDate maintenanceReturnDate;
 	
+
 	@ManyToOne
 	@JoinColumn(name = "car_id")
 	private Car car;
+	
 }

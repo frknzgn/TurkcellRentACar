@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.PosService;
 import com.turkcell.rentacar.business.outServices.VakifBankManager;
-import com.turkcell.rentacar.business.requests.payment.CreatePaymentRequest;
+import com.turkcell.rentacar.business.requests.cardDetail.CreateCardDetailForPaymentRequest;
 import com.turkcell.rentacar.core.utilities.results.Result;
 
 @Primary
@@ -13,12 +13,14 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 public class VakifBankServiceAdapter implements PosService {
 	
 	@Override 
-	public Result payment(CreatePaymentRequest createPaymentRequest) {
+	public Result payment(CreateCardDetailForPaymentRequest cardDetailForPaymentRequest,double totalFee) {
 		
 		VakifBankManager vakifBankManager = new VakifBankManager();
-		return vakifBankManager.doPayment(createPaymentRequest.getCardNumber(), 
-											String.valueOf(createPaymentRequest.getCardCvvNumber()), 
-																	createPaymentRequest.getCardOwnerName());
+		return vakifBankManager.doPayment(cardDetailForPaymentRequest.getCardNo(), 
+											cardDetailForPaymentRequest.getCardCvv(), 
+												cardDetailForPaymentRequest.getCardHolder(),1200);
 		
 	}
+
+
 }

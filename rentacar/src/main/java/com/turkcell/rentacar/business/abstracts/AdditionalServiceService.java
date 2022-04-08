@@ -22,4 +22,7 @@ public interface AdditionalServiceService {
 	
 	Result delete(DeleteAdditonalServiceRequest deleteAdditonalServiceRequest) throws BusinessException;
 	
+	void checkIfAdditionIdExists(int additionalServiceId) throws BusinessException;
+	double totalAdditionalServiceFeeCalculator(List<Integer> additionalServiceList);
+	
 }

@@ -11,7 +11,10 @@ import com.turkcell.rentacar.entites.concretes.Invoice;
 @Repository
 public interface InvoiceDao extends JpaRepository<Invoice, Integer> {
 	
-	List<Invoice> findAllByRentDateLessThanEqualAndReturnDateGreaterThanEqual(LocalDate returnDate,LocalDate rentDate);
-	//List<Invoice> findByUser_userId(int userId);
+	    List<Invoice> getByCustomerUserId(int customerId);
+
+	    List<Invoice> getByCreatingDateBetween(LocalDate startingDate, LocalDate endingDate);
+
+	    boolean existsByCustomer_UserId(int customerId);
 	
 }

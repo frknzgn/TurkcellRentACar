@@ -14,7 +14,7 @@ public class DeleteRentalRequest {
 	
 	@NotNull
 	@Min(0)
-	private int id;
+	private int rentalId;
 	
 	
 }

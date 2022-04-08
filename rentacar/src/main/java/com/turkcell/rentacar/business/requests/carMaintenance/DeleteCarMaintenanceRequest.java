@@ -13,7 +13,7 @@ public class DeleteCarMaintenanceRequest {
 	
 	@NotNull
 	@Min(0)	
-	private int id;
+	private int carMaintenanceId;
 		
 					
 }

@@ -39,18 +39,19 @@ public class ColorController {
 	}
 	
 	
-	@GetMapping("/getall")
-	public DataResult<List<ListColorDto>> getall(){
-		
-		return this.colorService.getall();
-	
-	}
-	
 	@PostMapping("/add")
 	public Result add(@RequestBody CreateColorRequest createColorRequest) throws BusinessException {
 		
 		return this.colorService.add(createColorRequest);
 
+	}
+	
+	
+	@GetMapping("/getall")
+	public DataResult<List<ListColorDto>> getall(){
+		
+		return this.colorService.getall();
+	
 	}
 	
 	@GetMapping("/getbyid")

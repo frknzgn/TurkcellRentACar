@@ -2,6 +2,7 @@ package com.turkcell.rentacar.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.turkcell.rentacar.business.abstracts.CityService;
@@ -18,6 +20,8 @@ import com.turkcell.rentacar.business.requests.city.DeleteCityRequest;
 import com.turkcell.rentacar.business.requests.city.UpdateCityRequest;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
+
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 
 @RestController

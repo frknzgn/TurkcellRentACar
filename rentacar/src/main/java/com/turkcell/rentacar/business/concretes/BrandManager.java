@@ -64,9 +64,9 @@ public class BrandManager implements BrandService{
 	@Override
 	public DataResult<GetBrandDto> getById(int brandId) {
 		
-		checkIfIdExist(brandId);
+		checkIfBrandIdExists(brandId);
 	//Defencive programming Ya id yoksa internal serverla logları kullanıcıya iletir
-		var result = this.brandDao.getByBrandId(brandId);
+		var result = this.brandDao.getById(brandId);
 		GetBrandDto response = this.modelMapperService.forDto().map(result,GetBrandDto.class);
 		
 		return new SuccessDataResult<GetBrandDto>(response, Messages.BRAND_GETBY_ID);
@@ -78,7 +78,7 @@ public class BrandManager implements BrandService{
 	public Result update(UpdateBrandRequest updateBrandRequest) throws BusinessException {
 		
 		checkBrandNameExist(updateBrandRequest.getBrandName());
-		checkIfIdExist(updateBrandRequest.getBrandId());
+		checkIfBrandIdExists(updateBrandRequest.getBrandId());
 	
 		Brand brand = this.modelMapperService.forRequest().map(updateBrandRequest,Brand.class);
 		this.brandDao.save(brand);
@@ -91,7 +91,7 @@ public class BrandManager implements BrandService{
 	@Override
 	public Result delete(DeleteBrandRequest deleteBrandRequest) {
 		
-		checkIfIdExist(deleteBrandRequest.getBrandId());
+		checkIfBrandIdExists(deleteBrandRequest.getBrandId());
 		
 		Brand brand = this.modelMapperService.forRequest().map(deleteBrandRequest, Brand.class);
 		this.brandDao.delete(brand);
@@ -99,15 +99,7 @@ public class BrandManager implements BrandService{
 		
 	}
 	
-	private void checkIfIdExist(int brandId) {
-		
-		if(this.brandDao.getByBrandId(brandId) == null) {
-			
-			throw new BusinessException(Messages.BRAND_NOT_EXİST);
-			
-		}
-		
-	}
+	
 	
 	private void checkBrandNameExist(String brandName) {
 		
@@ -121,4 +113,17 @@ public class BrandManager implements BrandService{
 			}
 		}		
 	}
+
+
+	@Override
+	public void checkIfBrandIdExists(int brandId) {
+		
+		if(!this.brandDao.existsByBrandId(brandId)) {
+			
+			throw new BusinessException(Messages.BRAND_NOT_EXİST);
+			
+		}
+		
+	}
 }
+

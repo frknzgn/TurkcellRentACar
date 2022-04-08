@@ -12,9 +12,20 @@ import lombok.NoArgsConstructor;
 public class GetRentalDto {
 	
 	private int rentalId;
-	private int carId;
-	private int customerId;
-	private LocalDate rentDate;
-	private LocalDate returnDate;
+	
+    private LocalDate dateOfIssue;
+    private LocalDate dateOfReceipt;
+    
+    private LocalDate rentReturnDate;
+    
+    private double rentMilage;
+    private double rentReturMilage;
+    
+    private String brandName;
+    
+    private String description;
+    
+    private String rentCity;
+    private String rentReturnCity;
 	
 }

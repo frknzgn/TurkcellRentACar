@@ -10,11 +10,13 @@ import lombok.NoArgsConstructor;
 public class UpdateCarRequest {
 
 	private int carId;
-	private double dailyPrice;
 	private int modelYear;
-	private String description;	
 	private int brandId;	
 	private int colorId;
 	private int milage;
 
+	private String description;	
+		
+	private double dailyPrice;
+	
 }

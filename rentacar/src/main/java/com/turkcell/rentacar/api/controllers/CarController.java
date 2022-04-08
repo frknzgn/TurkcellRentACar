@@ -17,15 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.dtos.car.GetCarDto;
-import com.turkcell.rentacar.business.dtos.car.ListCarByDailyPriceDto;
 import com.turkcell.rentacar.business.dtos.car.ListCarDto;
 import com.turkcell.rentacar.business.requests.car.CreateCarRequest;
 import com.turkcell.rentacar.business.requests.car.DeleteCarRequest;
 import com.turkcell.rentacar.business.requests.car.UpdateCarRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
-import com.turkcell.rentacar.core.utilities.results.ErrorDataResult;
-import com.turkcell.rentacar.core.utilities.results.ErrorResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 
 
@@ -39,82 +36,63 @@ public class CarController {
 		this.carService=carService;
 	}
 	
-	@GetMapping("/getall")
-	public DataResult<List<ListCarDto>> getall(){
-		try {
-			return this.carService.getAll();
-		} catch (BusinessException e) {
-			return new ErrorDataResult<List<ListCarDto>>(e.getMessage());
-		}
-		
-	}
-	
-	
-	@GetMapping("/getbyid")
-	public DataResult<GetCarDto> getbyid(@RequestParam int id){
-		try {
-			return this.carService.getByCarId(id);
-		} catch (BusinessException e) {
-			return new ErrorDataResult<GetCarDto>(e.getMessage());
-		}
-		
-		
-	}
 	
 	@PostMapping("/add")
 	public Result add(@RequestBody @Valid CreateCarRequest createCarRequest) throws BusinessException {
 
-		try {
-		return this.carService.add(createCarRequest);
-		} catch (BusinessException e) {
-			return new ErrorResult(e.getMessage());
-		}		
+		return this.carService.add(createCarRequest);		
+		
 	}
+	
+	
+	@GetMapping("/getall")
+	public DataResult<List<ListCarDto>> getall(){
+		
+			return this.carService.getAll();
+		
+	}
+	
+	@GetMapping("/getbyid")
+	public DataResult<GetCarDto> getbyid(@RequestParam int id){
+
+			return this.carService.getByCarId(id);
+	
+	}
+	
+	@GetMapping("/getAllByPage")
+	public DataResult<List<ListCarDto>> getAll(int pageNumber, int pageSize) throws BusinessException{
+	
+			return this.carService.getAllPaged(pageNumber, pageSize);
+	
+	}
+		
+	@GetMapping("/getAllSortedByChoice")
+	public DataResult<List<ListCarDto>> getAllSorted(Sort.Direction direction) throws BusinessException{
+
+			return this.carService.getAllSorted(direction);		
+			
+	}
+	
+	@GetMapping("/getCarByDailyPrice")
+	public DataResult<List<ListCarDto>> getCarByDailyPriceLessThanEqual(double dailyPrice) throws BusinessException{
+		
+			return this.carService.getCarByDailyPriceLessThanEqual(dailyPrice);
+	
+	}
+	
 	
 	@DeleteMapping("/delete")
 	public Result delete(@RequestBody DeleteCarRequest deleteCarRequest) throws BusinessException {
-		try {
+
 			return this.carService.delete(deleteCarRequest);
-		} catch (BusinessException e) {
-			return new ErrorResult(e.getMessage());
-		}
 		
 	}
 	
 	@PutMapping("/update")
 	public Result update(@RequestBody UpdateCarRequest updateCarRequest) throws BusinessException {
-		try {
-			return this.carService.update(updateCarRequest);
-		} catch (BusinessException e) {
-			return new ErrorResult(e.getMessage());
-		}
-	}
-		
-	@GetMapping("/getAllByPage")
-	public DataResult<List<ListCarDto>> getAll(int pageNumber, int pageSize) throws BusinessException{
-		try {
-			return this.carService.getAllPaged(pageNumber, pageSize);
-		} catch (BusinessException e) {
-			return new ErrorDataResult<List<ListCarDto>>(e.getMessage());
-		}
-	}
-		
-	@GetMapping("/getAllSortedByChoice")
-	public DataResult<List<ListCarDto>> getAllSorted(Sort.Direction direction) throws BusinessException{
-		try {
-			return this.carService.getAllSorted(direction);
-		} catch (BusinessException e) {
-			return new ErrorDataResult<List<ListCarDto>>(e.getMessage());
-		}		
-	}
 	
-	@GetMapping("/getCarByDailyPrice")
-	public DataResult<List<ListCarByDailyPriceDto>> getCarByDailyPriceLessThanEqual(double dailyPrice) throws BusinessException{
-		try {
-			return this.carService.getCarByDailyPriceLessThanEqual(dailyPrice);
-		} catch (BusinessException e) {
-			return new ErrorDataResult<List<ListCarByDailyPriceDto>>(e.getMessage());
-		}
+			return this.carService.update(updateCarRequest);
+	
 	}
 		
 }

@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DeleteIndividualCustomerRequest {
 	
-    private int individualCustomerId;
+    private int customerId;
     
 }

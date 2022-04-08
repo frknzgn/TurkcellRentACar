@@ -14,24 +14,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateCarMaintenanceRequest {
-
+	
+	@NotNull
+	@Min(0)	
+	private int carMaintenanceId;
+	
 	@NotNull
 	@Min(0)	
 	private int carId;
 	
-	@NotNull
-	@Min(0)	
-	private int id;
 	
 	@NotNull
 	@Size(min=2,max=250)
 	private String description;
 	
-	@NotNull
-	private LocalDate dropDate;
 	
-	@NotNull 
-	private LocalDate returnDate;
-	
+	private LocalDate maintenanceDropDate;
+	private LocalDate maintenanceReturnDate;
 	
 }

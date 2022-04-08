@@ -20,8 +20,6 @@ import com.turkcell.rentacar.business.requests.brand.DeleteBrandRequest;
 import com.turkcell.rentacar.business.requests.brand.UpdateBrandRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
-import com.turkcell.rentacar.core.utilities.results.ErrorDataResult;
-import com.turkcell.rentacar.core.utilities.results.ErrorResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 
 
@@ -36,46 +34,28 @@ public class BrandController {
 		this.brandService = brandService;
 	}
 	
+	@PostMapping("/add")
+	public Result add(@RequestBody CreateBrandRequest createBrandRequest) {
+
+			return this.brandService.add(createBrandRequest);
+				
+	}
+	
+	
 	@GetMapping("/getall")
 	public DataResult<List<ListBrandDto>> getall(){
-		try {
-			return this.brandService.getall();
-		} catch (BusinessException e) {
-			return new ErrorDataResult<List<ListBrandDto>>(e.getMessage());
-		}
-		
+	
+			return this.brandService.getall();	
+			
 	}
 	
 	@GetMapping("/getbyid")
 	public DataResult<GetBrandDto> getbyid(@RequestParam int id){
-		try {
-			return this.brandService.getById(id);
-		} catch (BusinessException e) {
-			return new ErrorDataResult<GetBrandDto>(e.getMessage());
-		}
-		
-		
+			
+		return this.brandService.getById(id);
+	
 	}
 	
-	@PostMapping("/add")
-	public Result add(@RequestBody CreateBrandRequest createBrandRequest) {
-		try {
-			return this.brandService.add(createBrandRequest);
-		} catch (Exception e) {
-			return new ErrorResult(e.getMessage());
-		}
-		
-	}
-	
-	@DeleteMapping("/delete")
-	public Result delete(@RequestBody DeleteBrandRequest deleteBrandRequest) {
-		try {
-			return this.brandService.delete(deleteBrandRequest);
-		} catch (BusinessException e) {
-			return new ErrorResult(e.getMessage());
-		}
-		
-	}
 	
 	@PutMapping("/update")
 	public Result update(@RequestBody UpdateBrandRequest updateBrandRequest) throws BusinessException {
@@ -83,11 +63,16 @@ public class BrandController {
 		try {
 			return this.brandService.update(updateBrandRequest);
 		} catch (BusinessException e) {
-			return new ErrorResult(e.getMessage());
+			throw new BusinessException(e.getMessage());
 		}
-		
 	}
 	
 	
+	@DeleteMapping("/delete")
+	public Result delete(@RequestBody DeleteBrandRequest deleteBrandRequest) {
+		
+			return this.brandService.delete(deleteBrandRequest);
+
+	}
 
 }

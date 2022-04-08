@@ -11,8 +11,8 @@ public class GetIndividualCustomerDto {
 	
 	private int customerId;
     private String email;
-	private String firstName;
-	private String lastName;
-	private String individualCustomerNationalityId;
+	private String individualCustomerFirstName;
+	private String individualCustomerLastName;
+	private String nationalityId;
 	
 }

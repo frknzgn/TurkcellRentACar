@@ -6,8 +6,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.springframework.lang.Nullable;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,17 +17,12 @@ public class CreateCarMaintenanceRequest {
 
 	@NotNull
 	@Min(0)	
-	private Integer carId;
+	private int carId;
 	
 	@NotNull
 	@Size(min=2,max=250)
 	private String description;
 	
-	@NotNull
-	private LocalDate dropDate;
-	
-	@Nullable
-	private LocalDate returnDate;
-	
-	
+	private LocalDate maintenanceDropDate;
+	private LocalDate maintenanceReturnDate;
 }

@@ -1,6 +1,7 @@
 package com.turkcell.rentacar.core.exceptions;
 
 
+
 @SuppressWarnings("serial")
 public class BusinessException extends RuntimeException {
 	

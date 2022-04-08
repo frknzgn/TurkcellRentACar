@@ -30,8 +30,9 @@ public class CarDamageManager implements CarDamageService {
 	private ModelMapperService modelMapperService;
 	private CarService carService;
 	
+	
 	@Autowired
-	public CarDamageManager(CarService carService, CarDamageDao carDamageDao, ModelMapperService modelMapperService) {
+	public CarDamageManager(CarDamageDao carDamageDao, ModelMapperService modelMapperService,CarService carService) {
 		
 		this.carDamageDao = carDamageDao;
 		this.modelMapperService = modelMapperService;
@@ -45,7 +46,10 @@ public class CarDamageManager implements CarDamageService {
 		this.carService.checkCarExist(createCarDamageRequest.getCarId());
 		
 		CarDamage carDamage = this.modelMapperService.forRequest().map(createCarDamageRequest, CarDamage.class);		
+		
+		//carDamage.setCarDamageId(0);
 		this.carDamageDao.save(carDamage);
+		
 		
 		return new SuccessResult(Messages.CAR_DAMAGE_ADDED);
 		
@@ -104,7 +108,7 @@ public class CarDamageManager implements CarDamageService {
 	
 	private void checkCarDamageNotExist(int carDamageId) {
 		
-		if(this.carDamageDao.getByCarDamageId(carDamageId) == null) {
+		if(this.carDamageDao.getById(carDamageId) == null) {
 			
 			throw new BusinessException(Messages.CAR_DAMAGE_NOT_EXİST);
 			

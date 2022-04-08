@@ -30,16 +30,19 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 	
 	@Autowired
 	public AdditionalServiceManager(ModelMapperService modelMapperService,AdditionalServiceDao additionalServiceDao) {
+		
 		this.additionalServiceDao = additionalServiceDao;
 		this.modelMapperService = modelMapperService;
+		
 	}
 	
 	@Override
 	public Result add(CreateAdditonalServiceRequest createAdditonalServiceRequest) {
-		
+	
 		checkAdditionalServiceExit(createAdditonalServiceRequest.getAdditionalServiceName());
 		
 		AdditionalService additionalService = this.modelMapperService.forRequest().map(createAdditonalServiceRequest, AdditionalService.class);
+		
 		this.additionalServiceDao.save(additionalService);
 		
 		return new SuccessResult(Messages.ADDITIONAL_SERVİCE_ADDED);
@@ -64,7 +67,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		
 		checkAdditionalServiceNotExist(additionalServiceId);
 		
-		AdditionalService additionalService = this.additionalServiceDao.getByAdditionalServiceId(additionalServiceId);
+		AdditionalService additionalService = this.additionalServiceDao.getById(additionalServiceId);
 		GetAdditionalServiceDto response = this.modelMapperService.forDto().map(additionalService, GetAdditionalServiceDto.class);
 		
 		return new SuccessDataResult<GetAdditionalServiceDto>(response, Messages.ADDITIONAL_SERVİCE_GETBY_ID);
@@ -100,22 +103,40 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 	
 	private void checkAdditionalServiceExit(String additionalServiceName) {
 		
-		List<AdditionalService> additionalServices = this.additionalServiceDao.findAll();
-		for (AdditionalService additionalService : additionalServices) {
-			if(additionalService.getAdditionalServiceName().toLowerCase().matches(additionalServiceName.toLowerCase())) {
-				
-				throw new BusinessException(Messages.ADDITIONAL_SERVICE_EXİST);
-			}
+		if (this.additionalServiceDao.existsByAdditionalServiceName(additionalServiceName)) {
+			
+            throw new BusinessException(Messages.SAME_NAME);
+        }
 		}	
-	}
+
 	
-	private void checkAdditionalServiceNotExist(int additionalServiceId) {
+	public void checkAdditionalServiceNotExist(int additionalServiceId) {
 		
-		if(this.additionalServiceDao.getByAdditionalServiceId(additionalServiceId) == null) {
+		if(!this.additionalServiceDao.existsByAdditionalServiceId(additionalServiceId)) {
 			
 			throw new BusinessException(Messages.ADDITIONAL_SERVICE_NOT_EXİST);
 			
 		}
 	}
+
+
+	@Override
+	public double totalAdditionalServiceFeeCalculator(List<Integer> additionalServiceList) {
+
+		  double total = 0;
+	        for (Integer integer : additionalServiceList) {
+	            total += this.additionalServiceDao.getById(integer).getAdditionalServicePrice();
+	        }
+	        return total;
+	    }
+
+	@Override
+	public void checkIfAdditionIdExists(int additionalServiceId) throws BusinessException {
+		
+		if (!this.additionalServiceDao.existsByAdditionalServiceId(additionalServiceId)) {
+            throw new BusinessException(Messages.ADDITIONAL_SERVICE_NOT_EXİST);
+        }
+	}
+	 
+	}
 	
-}

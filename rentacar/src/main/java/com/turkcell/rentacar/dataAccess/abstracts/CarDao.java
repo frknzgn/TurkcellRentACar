@@ -13,6 +13,9 @@ import com.turkcell.rentacar.entites.concretes.Car;
 public interface CarDao extends JpaRepository<Car,Integer> {
 	
 	Car getByCarId(int carId);
+	
 	List<Car> getCarByDailyPriceLessThanEqual(double dailyPrice);
+	
+	boolean existsByCarId(int carId);
 	
 }

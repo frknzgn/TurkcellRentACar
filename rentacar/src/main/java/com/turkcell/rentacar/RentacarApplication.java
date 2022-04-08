@@ -1,3 +1,4 @@
+
 package com.turkcell.rentacar;
 
 import java.util.HashMap;
@@ -28,8 +29,9 @@ public class RentacarApplication {
 	
 	 @Bean
 	 public ModelMapper getModelMapper() {
+		 
 	    	return new ModelMapper();
-	    }
+	 }
 	
 
 	 @ExceptionHandler

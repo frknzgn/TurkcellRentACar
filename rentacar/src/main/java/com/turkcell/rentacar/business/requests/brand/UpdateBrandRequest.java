@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class UpdateBrandRequest {
 
 	private int brandId;
+	
 	private String brandName;
 	
 }

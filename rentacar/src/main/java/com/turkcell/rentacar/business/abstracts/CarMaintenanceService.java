@@ -24,4 +24,6 @@ public interface CarMaintenanceService {
 	
 	Result delete(DeleteCarMaintenanceRequest deleteCarMaintenanceRequest);
 	
+	void checkIfCarMaintenanceReturnDateByCarId(int carId) throws BusinessException;
+	
 }

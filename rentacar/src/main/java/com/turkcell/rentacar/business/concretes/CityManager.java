@@ -38,7 +38,7 @@ public class CityManager implements CityService{
 	
 	@Override
 	public Result add(CreateCityRequest createCityRequest) {
-		
+	
 		checkCityNameExist(createCityRequest.getCityName());
 		
 		City city = this.modelMapperService.forRequest().map(createCityRequest, City.class);
@@ -65,7 +65,7 @@ public class CityManager implements CityService{
 	@Override
 	public Result update(UpdateCityRequest updateCityRequest) {
 		
-		checkIfCityExistById(updateCityRequest.getCityId());
+		checkIfCityIdExists(updateCityRequest.getCityId());
 		
 		City city = this.modelMapperService.forRequest().map(updateCityRequest, City.class);
 		this.cityDao.save(city);
@@ -78,7 +78,7 @@ public class CityManager implements CityService{
 	@Override
 	public Result delete(DeleteCityRequest deleteCityRequest) {
 		
-		checkIfCityExistById(deleteCityRequest.getCityId());
+		checkIfCityIdExists(deleteCityRequest.getCityId());
 		
 		City city = this.modelMapperService.forRequest().map(deleteCityRequest, City.class);
 		this.cityDao.delete(city);
@@ -91,24 +91,27 @@ public class CityManager implements CityService{
 	private void checkCityNameExist(String cityName) {
 		
 		List<City> cities = this.cityDao.findAll();
-		
-		for (City city : cities ) {
-			if(city.getCityName().toLowerCase().matches(cityName.toLowerCase())) {
+		System.out.println(cities);
+		for(City city : cities) {
+			
+			if(city.getCityName().toLowerCase().equals(cityName.toLowerCase())) {
 				
-				throw new BusinessException(Messages.CİTY_EXİST);
+				throw new BusinessException(Messages.CITY_EXİST);
 				
 			}
-		}
-		
+		}			
 	}
-	
-	private void checkIfCityExistById(int cityId) {
+
+
+	@Override
+	public void checkIfCityIdExists(int cityId) {
 		
-		if(this.cityDao.getByCityId(cityId)==null) {
+		if (!this.cityDao.existsById(cityId)) {
 			
-			throw new BusinessException(Messages.CİTY_NOT_EXİST);
-			
-		}
+            throw new BusinessException(Messages.CİTY_NOT_EXİST);
+            
+        }
+		
 	}
 
 }

@@ -11,7 +11,7 @@ import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 
-public interface IndividualCustomerService extends CustomerService {
+public interface IndividualCustomerService {
 	
 	Result add(CreateIndividualCustomerRequest createIndividualCustomerRequest) throws BusinessException;
 	
@@ -21,5 +21,7 @@ public interface IndividualCustomerService extends CustomerService {
 	Result update(UpdateIndividualCustomerRequest updateIndividualCustomerRequest);
 	
 	Result delete(DeleteIndividualCustomerRequest deleteIndividualCustomerRequest) throws BusinessException;
-
+	
+	void checkIfIndividualCustomerIdExists(int IndividualCustomerId) throws BusinessException;
+	
 }

@@ -32,12 +32,14 @@ public class CarDamageController {
 	
 	}
 	
+	
 	@PostMapping("/add")
 	public Result add(CreateCarDamageRequest createCarDamageRequest) {
 		
 		return this.carDamageService.add(createCarDamageRequest);
 		
 	}
+	
 	
 	@GetMapping("/getall")
 	public DataResult<List<ListCarDamageDto>> getAll(){
@@ -53,12 +55,14 @@ public class CarDamageController {
 		
 	}
 	
+	
 	@PutMapping("/update")
 	public Result update(UpdateCarDamageRequest updateCarDamageRequest) {
 		
 		return this.carDamageService.update(updateCarDamageRequest);
 		
 	}
+	
 	
 	@DeleteMapping("/delete")
 	public Result delete(DeleteCarDamageRequest deletCarDamageRequest) {

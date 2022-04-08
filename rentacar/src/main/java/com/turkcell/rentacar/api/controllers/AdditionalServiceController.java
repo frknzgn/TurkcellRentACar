@@ -33,29 +33,43 @@ public class AdditionalServiceController {
 		
 	}
 	
+	@PostMapping("/add")
+	public Result add(CreateAdditonalServiceRequest createAdditonalServiceRequest) {
+		
+		return this.additionalServiceService.add(createAdditonalServiceRequest);
+	
+	}
+	
+	
 	@GetMapping("/getall")
 	public DataResult<List<ListAdditionalServiceDto>> getall() throws BusinessException{
+		
 		return this.additionalServiceService.getall();
+	
 	}
 	
 	@GetMapping("/getbyid")
 	public DataResult<GetAdditionalServiceDto> getById(int id) throws BusinessException{
+		
 		return this.additionalServiceService.getById(id);
+	
 	}
 	
-	@PostMapping("/add")
-	public Result add(CreateAdditonalServiceRequest createAdditonalServiceRequest) {
-		return this.additionalServiceService.add(createAdditonalServiceRequest);
-	}
+	
 	
 	@PutMapping("/update")
 	public Result update(UpdateAdditonalServiceRequest updateAdditonalServiceRequest) throws BusinessException {
+		
 		return this.additionalServiceService.update(updateAdditonalServiceRequest);
+	
 	}
+	
 	
 	@DeleteMapping("/delete")
 	public Result delete(DeleteAdditonalServiceRequest deleteAdditonalServiceRequest) throws BusinessException {
+		
 		return this.additionalServiceService.delete(deleteAdditonalServiceRequest);
+	
 	}
 
 }

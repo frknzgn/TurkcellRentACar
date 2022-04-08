@@ -1,3 +1,4 @@
+
 package com.turkcell.rentacar.business.concretes;
 
 import java.util.List;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CorporateCustomerService;
+import com.turkcell.rentacar.business.abstracts.CustomerService;
 import com.turkcell.rentacar.business.dtos.corporateCustomer.GetCorporateCustomerDto;
 import com.turkcell.rentacar.business.dtos.corporateCustomer.ListCorporateCustomerDto;
 import com.turkcell.rentacar.business.requests.corporateCustomer.CreateCorporateCustomerRequest;
@@ -25,12 +27,14 @@ import com.turkcell.rentacar.entites.concretes.CorporateCustomer;
 @Service
 public class CorporateCustomerManager implements CorporateCustomerService{
 	
+	private CustomerService customerService;
 	private CorporateCustomerDao corporateCustomerDao;
 	private ModelMapperService modelMapperService;
 	
 	@Autowired
-	public CorporateCustomerManager(CorporateCustomerDao corporateCustomerDao, ModelMapperService modelMapperService) {
+	public CorporateCustomerManager(CorporateCustomerDao corporateCustomerDao, ModelMapperService modelMapperService, CustomerService customerService) {
 		
+		this.customerService = customerService;
 		this.corporateCustomerDao = corporateCustomerDao;
 		this.modelMapperService = modelMapperService;
 		
@@ -39,10 +43,11 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 	@Override
 	public Result add(CreateCorporateCustomerRequest createCorporateCustomerRequest) throws BusinessException {
 		
-		checkCustomerExist(createCorporateCustomerRequest.getTaxNumber());
-		checkEmailExist(createCorporateCustomerRequest.getEmail());
+		//customerService.checkIfEmailExist(createCorporateCustomerRequest.getEmail());		
 		
 		CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(createCorporateCustomerRequest, CorporateCustomer.class);
+		
+	
 		this.corporateCustomerDao.save(corporateCustomer);
 		
 		return new SuccessResult(Messages.CUSTOMER_ADDED);
@@ -56,7 +61,7 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 		var result = this.corporateCustomerDao.findAll();	
 		List<ListCorporateCustomerDto> response = result.stream().
 										map(customer->this.modelMapperService.forDto().
-										map(customer, ListCorporateCustomerDto.class)).collect(Collectors.toList());
+												map(customer, ListCorporateCustomerDto.class)).collect(Collectors.toList());
 		
 		return new SuccessDataResult<List<ListCorporateCustomerDto>>(response,Messages.CUSTOMER_LİSTED);
 		
@@ -65,7 +70,7 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 	@Override
 	public DataResult<GetCorporateCustomerDto> getById(int id) {
 		
-		checkCustomerNotExist(id);
+		checkIfCorporateCustomerIdExists(id);
 		
 		CorporateCustomer result = this.corporateCustomerDao.getById(id);		
 		GetCorporateCustomerDto response = this.modelMapperService.forDto().map(result, GetCorporateCustomerDto.class);
@@ -77,7 +82,7 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 	@Override
 	public Result update(UpdateCorporateCustomerRequest updateCustomerRequest) {
 		
-		checkCustomerNotExist(updateCustomerRequest.getId());
+		checkIfCorporateCustomerIdExists(updateCustomerRequest.getCustomerId());
 		
 		CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(updateCustomerRequest, CorporateCustomer.class);		
 		this.corporateCustomerDao.save(corporateCustomer);
@@ -90,7 +95,7 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 	@Override
 	public Result delete(DeleteCorporateCustomerRequest deleteCorporateCustomerRequest) throws BusinessException {
 		
-		checkCustomerNotExist(deleteCorporateCustomerRequest.getId());
+		checkIfCorporateCustomerIdExists(deleteCorporateCustomerRequest.getCustomerId());
 		
 		CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(deleteCorporateCustomerRequest, CorporateCustomer.class);		
 		this.corporateCustomerDao.delete(corporateCustomer);
@@ -127,14 +132,15 @@ public class CorporateCustomerManager implements CorporateCustomerService{
 				
 	}
 	
-	public final void checkCustomerNotExist(int customerId) {
+
+	@Override
+	public void checkIfCorporateCustomerIdExists(int CorporateCustomerId) throws BusinessException {
 		
-		if(this.corporateCustomerDao.getByCustomerId(customerId)==null) {
+		if(!this.corporateCustomerDao.existsById(CorporateCustomerId)) {
 			
 			throw new BusinessException(Messages.CUSTOMER_NOT_EXİST);
-			
-		}
 		
+		}
 	}
 
 }

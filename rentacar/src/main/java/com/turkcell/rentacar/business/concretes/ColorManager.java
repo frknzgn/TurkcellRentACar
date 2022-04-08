@@ -55,14 +55,14 @@ public class ColorManager implements ColorService {
 		List<ListColorDto> response = result.stream()
 						.map(color -> this.modelMapperService.forDto()
 								.map(color,ListColorDto.class)).collect(Collectors.toList());			
-		return new SuccessDataResult<List<ListColorDto>>(response, Messages.COLORS_LİSTED);
+		return new SuccessDataResult<List<ListColorDto>>(response, Messages.COLORS_LISTED);
 		
 	}
 
 	@Override
 	public DataResult<GetColorDto> getById(int colorId) {
 		
-		checkIfColorNotExist(colorId);
+		checkIfColorIdExists(colorId);
 		
 		Color result = this.colorDao.getByColorId(colorId);
 		GetColorDto response = this.modelMapperService.forDto().map(result, GetColorDto.class);
@@ -75,7 +75,7 @@ public class ColorManager implements ColorService {
 	@Override
 	public Result update(UpdateColorRequest updateColorRequest) {
 		
-		checkIfColorNotExist(updateColorRequest.getColorId()); 
+		checkIfColorIdExists(updateColorRequest.getColorId()); 
 			
 		Color color = this.modelMapperService.forRequest().map(updateColorRequest, Color.class);
 		this.colorDao.save(color);
@@ -87,7 +87,7 @@ public class ColorManager implements ColorService {
 	@Override
 	public Result delete(DeleteColorRequest deleteColorRequest) {
 		
-		checkIfColorNotExist(deleteColorRequest.getColorId());
+		checkIfColorIdExists(deleteColorRequest.getColorId());
 		
 		Color color = this.modelMapperService.forRequest().map(deleteColorRequest, Color.class);
 		this.colorDao.delete(color);
@@ -96,7 +96,7 @@ public class ColorManager implements ColorService {
 		
 	}
 	
-	private void checkIfColorNotExist(int colorId) {
+	public void checkIfColorIdExists(int colorId) {
 		
 		if(this.colorDao.getByColorId(colorId)==null) {
 			

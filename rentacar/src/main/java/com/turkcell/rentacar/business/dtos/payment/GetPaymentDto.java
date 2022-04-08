@@ -10,8 +10,10 @@ import lombok.NoArgsConstructor;
 public class GetPaymentDto {
 	
 	private int paymentId;
-	private int paymentInvoiceId;
-	private int orderedAdditionalServiceId;
-	private String cardHolder;
+	
+	private double totalPayment;
+	
+	private String rental_Car_Desciription;
+
 	
 }

@@ -1,5 +1,8 @@
 package com.turkcell.rentacar.business.requests.individualCustomer;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Email;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,10 +12,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateIndividualCustomerRequest {
 	
-	private int individualCustomerId;
-    private String email;
-    private String password;
+	private int customerId;
+	
+	
+    private Integer nationalityId;
+	
+    @NotNull
     private String firstName;
-	private String lastName;
-	private String individualCustomerNationalityId;
+    
+    @NotNull
+    private String lastName;
+    
+    @NotNull
+    @Email
+    private String Email;
+    
+    @NotNull
+    private String password;
 }

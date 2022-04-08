@@ -12,4 +12,8 @@ public interface CityDao extends JpaRepository<City, Integer> {
 	
 	City getByCityName(String cityName);
 	
+	boolean existsByCityId(int cityId);
+
+    boolean existsByCityName(String cityName);
+	
 }

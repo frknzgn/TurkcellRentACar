@@ -9,7 +9,7 @@ import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 @Service
 public class ZiraatBankManager {
 	
-	public Result makePayment( String cardHolder,String cardNumber, String cardCvvCode) {
+	public Result makePayment( String cardHolder,String cardNumber, String cardCvvCode,double totalFee) {
 
 		return new SuccessResult("ZiraatBank ile ödendi.");
 		

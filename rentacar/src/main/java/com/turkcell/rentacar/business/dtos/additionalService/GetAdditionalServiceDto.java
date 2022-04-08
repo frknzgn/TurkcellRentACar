@@ -11,7 +11,6 @@ public class GetAdditionalServiceDto {
 	
 	private int additionalServiceId;
 	private String additionalServiceName;
-	private String additionalServiceDescription;
 	private double additionalServicePrice;
 
 	

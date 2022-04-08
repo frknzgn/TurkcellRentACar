@@ -42,7 +42,7 @@ public class IndividualCustomerController {
 	}
 	
 	@PostMapping("/add")
-	public Result add(CreateIndividualCustomerRequest createIndividualCustomerRequest){
+	public Result add( CreateIndividualCustomerRequest createIndividualCustomerRequest){
 		
 		return this.individualCustomerService.add(createIndividualCustomerRequest);
 		

@@ -2,10 +2,8 @@ package com.turkcell.rentacar.entites.concretes;
 
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,10 +39,9 @@ public class CardDetail {
 	@Column(name = "card_expiration_date")
 	private LocalDate carExpirationDate;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	
+	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 	
-	
-
 }

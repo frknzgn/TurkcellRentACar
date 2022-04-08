@@ -33,13 +33,14 @@ public class Car  {
 	private double dailyPrice;
 	
 	@Column(name = "model_year")
-	private int modelYear;
+	private Integer modelYear;
 	
 	@Column(name = "description")
 	private String description;
 	
 	@Column(name = "milage")
-	private int milage;
+	private double milage;
+	
 	
 	@ManyToOne
 	@JoinColumn(name = "brand_id")
@@ -48,6 +49,7 @@ public class Car  {
 	@ManyToOne
 	@JoinColumn(name = "color_id")
 	private Color color;
+	
 	
 	@OneToMany(mappedBy = "car")
 	private List<CarMaintenance> carMaintenances;

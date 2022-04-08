@@ -2,23 +2,23 @@ package com.turkcell.rentacar.core.constants;
 
 public class Messages {
 	
-	public static final String EMAİL_EXİST = "Email.Exists";
-	public static final String CAR_MİLAGE_UPDATED = "CarMilage.Updated";
-	public static final String RENT_NOT_EXİST = "Rent.NotExist";
+	public static final String EMAIL_EXIST = "Email.Exists";
+	public static final String CAR_MILAGE_UPDATED = "CarMilage.Updated";
+	public static final String RENT_NOT_EXIST = "Rent.NotExist";
 	
-	public static final String CAR_IN_MAİNTENANCE = "Car.InMaintenance";
+	public static final String CAR_IN_MAINTENANCE = "Car.InMaintenance";
 	
 	public static final String CARD_ADDED = "CardDetails.Added";
-	public static final String CARD_DETAİLS_GET = "CardDetail.Get";
-	public static final String CARD_DETAİL_GETBY_CUSTOMERID = "CardDetail.GetByCustomerId";
-	public static final String CARD_DETAİLS_UPDATED = "CardDetail.Updated";
-	public static final String CARD_DETAİL_DELETED = "CardDetail.Deleted";
+	public static final String CARD_DETAILS_GET = "CardDetail.Get";
+	public static final String CARD_DETAIL_GETBY_CUSTOMERID = "CardDetail.GetByCustomerId";
+	public static final String CARD_DETAILS_UPDATED = "CardDetail.Updated";
+	public static final String CARD_DETAIL_DELETED = "CardDetail.Deleted";
 	
 	public static final String PAYMENT_GETALL = "Payment.GetAll";
 	public static final String PAYMENT_ADDED = "Payment.Added";
 	public static final String PAYMENT_NOT_EXİST = "NOTEXİST";
 	
-	public static final String COLORS_LİSTED = "Colors.Listed";
+	public static final String COLORS_LISTED = "Colors.Listed";
 	public static final String COLOR_ADDED = "Color.Added";
 	public static final String COLOR_NOT_EXİST = "Color.NotExist";
 	public static final String COLOR_EXİST = "Color.Exist";
@@ -26,7 +26,7 @@ public class Messages {
 	public static final String COLOR_DELETED = "Color.Deleted";
 	public static final String COLOR_GETBY_ID = "Color.GetById";
 	
-	public static final String CİTY_EXİST = "City.Exists";
+	public static final String CITY_EXİST = "City.Exists";
 	public static final String CİTY_NOT_EXİST = "City.NotExist";
 	public static final String CİTY_ADDED = "City.Added";
 	
@@ -102,6 +102,35 @@ public class Messages {
 	public static final String RENTAL_GETBY_CAR_ID = "Rental.GetByCarId";
 	public static final String RENTAL_UPDATED = "Rental.Updated";
 	public static final String RENTAL_DELETED = "Rental.Deleted";
+	
+	public static final String CARD_EXİST = "Card_Exist";
+	public static final String CARD_NOT_FOUND = "Card.Not.Exist";
+	
+	public static final String CAR_IS_IN_MAINTENANCE_NOW_BY_CAR_ID = "Car.InMaintenance";
+	public static final String CAR_RETURN_DISTANCE_ERROR = "Car.Return.Milage.Can.Not.Be.Lower.Than.Rent.Milage";
+	
+	public static final String PAYMENT_UPDATED = "Payment.Updated";
+	public static final String PAYMENT_DELETED = "Payment.Deleted";
+	public static final String PAYMENT_LISTED = "Payment.Listed";
+	public static final String PAYMENT_FAILED = "Payment.Failed";
+	
+	public static final String INVOICE_ADDED = "Invoice.Added";
+	public static final String INVOICE_LISTED = "Invoice.Listed";
+	public static final String INVOICE_CANNOT_SEARCH_FOR_THE_NEXT_DAYS = "Invoice.Not.Search.Next.Days";
+	public static final String INVOICE_STARTING_DATE_CANNOT_GREATER_THAN_END_DATE = "INVOICE_STARTING_DATE_CANNOT_GREATER_THAN_END_DATE";
+	public static final String INVOICE_NOT_EXIST = "Invoice.Not.Exists";
+	public static final String INVOICE_UPDATED = "Invoice.Updated";
+	public static final String INVOICE_DELETED = "Invoice.Deleted";
+	
+	public static final String ORDERED_ADDITIONAL_SERVICE_ADDED = "AdditionalService.Added";
+	public static final String ORDERED_ADDITIONAL_SERVICE_UPDATED = "AdditionalService.Updated";
+	public static final String ORDERED_ADDITIONAL_SERVICE_DELETED = "AdditionalService.Deleted";
+	public static final String ORDERED_ADDITIONAL_SERVICE_LISTED = "AdditionalService.Listed";	
+	public static final String ORDERED_ADDITIONAL_SERVICE_NOT_FOUND = "";
+	
+	public static final String RENTAL_STILL = "Rental.Rented";
+	public static final String RENTAL_NOT_EXİST = "Rental.Not.Exist";
+	public static final String SAME_NAME = "Same.Name";
 	
 	
 	

@@ -1,8 +1,9 @@
 package com.turkcell.rentacar.business.requests.payment;
 
-import javax.validation.constraints.NotNull;
+import java.util.List;
 
-import org.springframework.lang.Nullable;
+import com.turkcell.rentacar.business.requests.cardDetail.CreateCardDetailForPaymentRequest;
+import com.turkcell.rentacar.business.requests.rental.CreateRentalRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,23 +14,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreatePaymentRequest {
 	
-	@Nullable
-	private int invoiceId;
+	private CreateRentalRequest rentalRequest;
+
+	private CreateCardDetailForPaymentRequest createCardDetailForPaymentRequest;
 	
-	@Nullable
-	private int orderedAdditionalServiceId;
+	private List<Integer> additionalServiceList;
 	
-	@NotNull
-	private String cardOwnerName;
-	
-	@NotNull
-	private String cardNumber;
-	
-	@NotNull
-	private int cardCvvNumber;
-	
-	@Nullable
-	private boolean carDetailSaveOption;
+	private boolean saveCreditCard;
 	
 }
+
 

@@ -29,10 +29,11 @@ public class City {
 	@Column(name = "city_name")
 	private String cityName;
 	
-	@OneToMany(mappedBy = "rentalId")
-	private List<Rental> rentals;
 	
-	//farklı şehirlere göre farklı isterler gelebilir.
-	//rental history tablosu gelebilir.
-
+	@OneToMany(mappedBy= "rentCity")
+	private List<Rental> rentCity;
+	
+	@OneToMany(mappedBy= "rentReturnCity")
+	private List<Rental> rentReturnCity;
+	
 }

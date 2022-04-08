@@ -1,9 +1,5 @@
 package com.turkcell.rentacar.business.requests.orderedadditionalservice;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,17 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateOrderedAdditionalServiceRequest {
 	
-	@NotNull
-	 private int id;
-	 
-	 @NotNull
-	 @Positive
-	 private int additionalServiceId;
-
-	 @Positive
-	 @Min(1)
-	 private int quantity;
-	 
-	 private int rentalId;
-	 
+	private int orderedAdditionalServiceId;
+	
+	private int rentalId;
+	
+	private int additionalServiceId;
+ 
 }

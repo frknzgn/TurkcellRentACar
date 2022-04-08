@@ -11,5 +11,4 @@ public class ListBrandDto {
 	private int brandId;
 	private String brandName;
 		
-	
 }

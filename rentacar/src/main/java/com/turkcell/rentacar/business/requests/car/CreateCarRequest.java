@@ -16,17 +16,9 @@ import lombok.NoArgsConstructor;
 public class CreateCarRequest {
 	
 	@NotNull
-	@Min(0)	
-	private double dailyPrice;
-	
-	@NotNull
 	@Min(0)
 	@Max(2022)
 	private int modelYear;
-											//validation
-	@NotNull
-	@Size(min=2,max=250)
-	private String description;
 	
 	@NotNull
 	private int brandId;
@@ -36,5 +28,13 @@ public class CreateCarRequest {
 	
 	private int milage;
 	
+	
+	@NotNull
+	@Size(min=2,max=250)
+	private String description;
+	
+	@NotNull
+	@Min(1)
+	private double dailyPrice;
 	
 }

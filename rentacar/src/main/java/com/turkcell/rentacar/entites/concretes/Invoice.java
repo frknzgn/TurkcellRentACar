@@ -1,6 +1,7 @@
 package com.turkcell.rentacar.entites.concretes;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,19 +10,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -32,35 +28,24 @@ public class Invoice {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "invoice_id")
 	private int invoiceId;
-	
-	@Column(name = "invoice_number")
-	private String invoiceNumber;
-	
+
 	@Column(name = "creating_date")
 	private LocalDate creatingDate;
 	
-	@Column(name = "rent_date")
-	private LocalDate rentDate;
+	@Column(name = "total_price")
+    private double totalPrice;
 	
-	@Column(name = "return_date")
-	private LocalDate returnDate;
-	
-	@Transient
-	private int totalRentDay;
-	
-	@Column(name = "total")
-	private double totalInvoiceCost;
-	
+
 	@ManyToOne
-	@JoinColumn(name = "invoices", nullable = false)
+	@JoinColumn(name = "customer_id")
 	private Customer customer;
 	
-	@OneToOne(mappedBy = "paymentInvoice")
-	private Payment payment;
+	@ManyToOne
+	@JoinColumn(name = "rental_id")
+	private Rental rental;	
 	
-	@OneToOne
-    @JoinColumn(name = "rental_id")
-    private Rental rental;
 	
-//isimlendirme daha belirgin olmalı.
+	@OneToMany(mappedBy = "invoice")
+    private List<Payment> payments;
+	
 }
