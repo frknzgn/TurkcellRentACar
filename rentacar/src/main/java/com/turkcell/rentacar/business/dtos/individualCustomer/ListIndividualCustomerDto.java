@@ -13,6 +13,6 @@ public class ListIndividualCustomerDto {
     private String email;
 	private String individualCustomerFirstName;
 	private String individualCustomerLastName;
-	private Long nationalityId;
+	private String nationalityId;
 	
 }

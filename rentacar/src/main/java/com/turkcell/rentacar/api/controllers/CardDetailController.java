@@ -30,7 +30,7 @@ public class CardDetailController {
 	}
 	
 	@PostMapping("/add")
-	public Result add(@RequestBody CreateCardDetailRequest createCardDetailRequest) {
+	public Result add(CreateCardDetailRequest createCardDetailRequest) {
 		
 		return this.cardDetailService.add(createCardDetailRequest);
 		

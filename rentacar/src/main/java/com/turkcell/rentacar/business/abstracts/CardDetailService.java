@@ -18,4 +18,5 @@ public interface CardDetailService {
 	Result update(UpdateCardDetailRequest updateCardDetailRequest);
 	
 	Result delete(DeleteCardDetailRequest deleteCardDetailRequest);
+	
 }

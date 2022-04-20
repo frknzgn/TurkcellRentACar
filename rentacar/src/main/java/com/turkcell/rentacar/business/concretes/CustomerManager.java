@@ -7,6 +7,7 @@ import com.turkcell.rentacar.business.abstracts.CustomerService;
 import com.turkcell.rentacar.core.constants.Messages;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.dataAccess.abstracts.CustomerDao;
+import com.turkcell.rentacar.entites.concretes.Customer;
 
 @Service
 public class CustomerManager implements CustomerService {
@@ -37,6 +38,15 @@ public class CustomerManager implements CustomerService {
 			
 		}		
 	}
+
+	@Override
+	public Customer getById(int customerId) {
+		
+		return	this.customerDao.getById(customerId);
+		
+	}
+
+	
     
     
 }

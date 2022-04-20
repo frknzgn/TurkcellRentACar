@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +26,7 @@ public class CreateInvoiceRequest {
 	@Min(0)
 	private double totalPrice;
 	
-	@NotNull
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDate creatingDate;
 	
 }

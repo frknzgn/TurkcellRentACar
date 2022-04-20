@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,8 +30,8 @@ public class CreateCardDetailRequest {
     @Size(min = 3, max = 3)
 	private String cardCvv;
 	
-	@NotNull
- 	private LocalDate carExpirationDate;
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
+ 	private LocalDate cardExpirationDate;
 
 }
 

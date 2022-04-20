@@ -69,6 +69,23 @@
 	<build>
 		<plugins>
 			<plugin>
+            <groupId>com.heroku.sdk</groupId>
+            <artifactId>heroku-maven-plugin</artifactId>
+            <version>1.1.1</version>
+            <configuration>
+                <appName>rentacar</appName>
+                <includeTarget>false</includeTarget>
+                <includes>
+                    <include>${basedir}/${full-artifact-name}</include>
+                </includes>
+                <jdkVersion>1.8</jdkVersion>
+                <processTypes>
+                    <web>java $JAVA_OPTS -Dserver.port=$PORT -jar target/rentacar-0.0.1-SNAPSHOT.jar</web>
+                </processTypes>
+            </configuration>
+        </plugin>
+		
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
@@ -80,6 +97,11 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+        <groupId>com.heroku.sdk</groupId>
+        <artifactId>heroku-maven-plugin</artifactId>
+        <version>3.0.3</version>
+      </plugin>
 		</plugins>
 	</build>
 

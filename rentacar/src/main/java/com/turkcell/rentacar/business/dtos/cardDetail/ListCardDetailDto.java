@@ -19,8 +19,8 @@ public class ListCardDetailDto {
 	
 	private String cardCvv;
 	
-	private LocalDate carExpirationDate;
+	private LocalDate cardExpirationDate;
 	
-	private int customerId; 
+	private int customer_CustomerId; 
 	
 }

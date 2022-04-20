@@ -1,6 +1,7 @@
 package com.turkcell.rentacar.entites.concretes;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,10 +33,10 @@ public class CarMaintenance {
 	
 	
 	@Column(name = "drop_date")
-	private LocalDate maintenanceDropDate;
+	private Date maintenanceDropDate;
 	
 	@Column(name = "return_date")
-	private LocalDate maintenanceReturnDate;
+	private Date maintenanceReturnDate;
 	
 
 	@ManyToOne

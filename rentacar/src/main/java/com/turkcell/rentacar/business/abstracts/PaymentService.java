@@ -14,15 +14,15 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 public interface PaymentService {
 	
 	Result add(CreatePaymentRequest createPaymentRequest) ;
-
+	
+	DataResult<List<ListPaymentDto>> getAll();
+    DataResult<GetPaymentDto> getById(int paymentId);
+    
     Result update(UpdatePaymentRequest updatePaymentRequest) ;
 
     Result delete(DeletePaymentRequest deletePaymentRequest) ;
 
-    DataResult<List<ListPaymentDto>> getAll();
-
-    DataResult<GetPaymentDto> getById(int paymentId) ;
-
+    
     Result extraDaysRentCarPayment(CreateExtraPaymentRequest createExtraPaymentRequest);
 
     void checkIfPaymentIdExist(int paymentId);

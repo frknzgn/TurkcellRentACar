@@ -28,6 +28,7 @@ public class Payment {
 	@Column(name = "total_payment")
 	private double totalPayment;
 	
+	
 	@ManyToOne
 	@JoinColumn(name = "invoice_id")
 	private Invoice invoice;

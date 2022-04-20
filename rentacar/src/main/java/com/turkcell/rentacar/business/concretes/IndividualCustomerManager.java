@@ -40,7 +40,14 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		checkEmailExist(createIndividualCustomerRequest.getEmail());
 		checkNationalityIdValid(createIndividualCustomerRequest.getNationalityId());
 		
-		IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(createIndividualCustomerRequest, IndividualCustomer.class);
+		IndividualCustomer individualCustomer = new IndividualCustomer();
+		
+		individualCustomer.setEmail(createIndividualCustomerRequest.getEmail());
+		individualCustomer.setIndividualCustomerFirstName(createIndividualCustomerRequest.getFirstName());
+		individualCustomer.setIndividualCustomerLastName(createIndividualCustomerRequest.getLastName());
+		individualCustomer.setNationalityId(createIndividualCustomerRequest.getNationalityId());
+		individualCustomer.setPassword(createIndividualCustomerRequest.getPassword());
+		
 		this.individualCustomerDao.save(individualCustomer);
 		
 		return new SuccessResult(Messages.CUSTOMER_ADDED);
@@ -99,9 +106,9 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	}
 	
 	
-	private void checkNationalityIdValid(Long individualCustomerNationalityId) {
+	private void checkNationalityIdValid(String individualCustomerNationalityId) {
 		
-		if(individualCustomerNationalityId.toString().length() != 11 || individualCustomerNationalityId == null) {
+		if(individualCustomerNationalityId.length() != 11 || individualCustomerNationalityId == null) {
 			
 			throw new BusinessException(Messages.NATIONALITY_ID_NOT_VALID);
 		}

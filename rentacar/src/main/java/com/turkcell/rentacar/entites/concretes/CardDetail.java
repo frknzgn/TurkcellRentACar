@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,7 +39,8 @@ public class CardDetail {
 	private String cardCvv;
 	
 	@Column(name = "card_expiration_date")
-	private LocalDate carExpirationDate;
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
+	private LocalDate cardExpirationDate;
 	
 	
 	@ManyToOne

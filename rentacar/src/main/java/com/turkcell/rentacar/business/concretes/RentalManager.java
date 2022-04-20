@@ -1,3 +1,4 @@
+
 package com.turkcell.rentacar.business.concretes;
 
 import java.time.temporal.ChronoUnit;
@@ -14,10 +15,12 @@ import com.turkcell.rentacar.business.abstracts.CityService;
 import com.turkcell.rentacar.business.abstracts.CorporateCustomerService;
 import com.turkcell.rentacar.business.abstracts.CustomerService;
 import com.turkcell.rentacar.business.abstracts.IndividualCustomerService;
+import com.turkcell.rentacar.business.abstracts.InvoiceService;
 import com.turkcell.rentacar.business.abstracts.PaymentService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.dtos.rental.GetRentalDto;
 import com.turkcell.rentacar.business.dtos.rental.ListRentalDto;
+import com.turkcell.rentacar.business.requests.invoice.CreateInvoiceRequest;
 import com.turkcell.rentacar.business.requests.payment.CreateExtraPaymentRequest;
 import com.turkcell.rentacar.business.requests.rental.CreateRentalRequest;
 import com.turkcell.rentacar.business.requests.rental.DeleteRentalRequest;
@@ -45,12 +48,14 @@ public class RentalManager implements RentalService{
 	 private CorporateCustomerService corporateCustomerService;
 	 private CustomerService customerService;
 	 private PaymentService paymentService;
+	 private InvoiceService invoiceService;
 
 
 	    @Autowired
 	    public RentalManager(RentalDao rentalDao, ModelMapperService modelMapperService,@Lazy CarMaintenanceService carMaintenanceService,
 	                          @Lazy CarService carService,@Lazy CityService cityService, @Lazy CorporateCustomerService corporateCustomerService,
-	                          @Lazy IndividualCustomerService individualCustomerService, @Lazy CustomerService customerService, @Lazy PaymentService paymentService) {
+	                          @Lazy IndividualCustomerService individualCustomerService, @Lazy CustomerService customerService,
+	                          @Lazy PaymentService paymentService, @Lazy InvoiceService invoiceService) {
 	        
 	    	this.rentalDao = rentalDao;
 	        this.modelMapperService = modelMapperService;
@@ -61,6 +66,7 @@ public class RentalManager implements RentalService{
 	        this.individualCustomerService = individualCustomerService;
 	        this.customerService = customerService;
 	        this.paymentService = paymentService;
+	        this.invoiceService = invoiceService;
 	        
 	    }
 
@@ -81,8 +87,17 @@ public class RentalManager implements RentalService{
 
 	        rental.setRentalId(0);
 	        Rental returnRentcar = this.rentalDao.save(rental);
+	        
+	        
+	        CreateInvoiceRequest createInvoiceRequest = new CreateInvoiceRequest();
+	        createInvoiceRequest.setCreatingDate(createRentalRequest.getDateOfReceipt());
+	        createInvoiceRequest.setCustomerId(createRentalRequest.getCustomer_UserId());
+	        createInvoiceRequest.setRentalId(rental.getRentalId());
+	        createInvoiceRequest.setTotalPrice(totalRentalDailyPriceAndDifferntCityCalculator(rental));
+	        this.invoiceService.add(createInvoiceRequest);
 
 	        return new SuccessDataResult<Integer>(returnRentcar.getRentalId(), Messages.RENTAL_ADDED);
+	        
 	    }
 
 	    @Override
@@ -101,15 +116,30 @@ public class RentalManager implements RentalService{
 
 	        rental.setRentalId(0);
 	        this.rentalDao.save(rental);
+	        
+	        createInvoiceviaRental(createRentalRequest,rental);
+	       
 
 	        return new SuccessResult(Messages.RENTAL_ADDED);
 	    }
 
-	    @Override
+	    private void createInvoiceviaRental(CreateRentalRequest createRentalRequest, Rental rental) {
+	    	
+	    	 	CreateInvoiceRequest createInvoiceRequest = new CreateInvoiceRequest();
+		        createInvoiceRequest.setCreatingDate(createRentalRequest.getDateOfReceipt());
+		        createInvoiceRequest.setCustomerId(createRentalRequest.getCustomer_UserId());
+		        createInvoiceRequest.setRentalId(rental.getRentalId());
+		        createInvoiceRequest.setTotalPrice(totalRentalDailyPriceAndDifferntCityCalculator(rental));
+		        this.invoiceService.add(createInvoiceRequest);
+			
+		}
+
+		@Override
 	    public Result update(UpdateRentalRequest updateRentalRequest) throws BusinessException {
 	    	
 	        checkIfRentalExists(updateRentalRequest.getRentalId());
 	        checkIfRentalReturnDateByCarId(updateRentalRequest.getCarId());
+	        
 	        this.carService.checkCarExist(updateRentalRequest.getCarId());
 	        this.carMaintenanceService.checkIfCarMaintenanceReturnDateByCarId(updateRentalRequest.getCarId());
 	        this.cityService.checkIfCityIdExists(updateRentalRequest.getRentCityId());

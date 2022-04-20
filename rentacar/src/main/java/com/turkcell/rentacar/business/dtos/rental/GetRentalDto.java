@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 public class GetRentalDto {
 	
 	private int rentalId;
+	private int customer_CustomerId;
+	private int carId;
 	
     private LocalDate dateOfIssue;
     private LocalDate dateOfReceipt;

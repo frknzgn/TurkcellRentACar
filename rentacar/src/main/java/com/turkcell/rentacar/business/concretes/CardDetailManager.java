@@ -40,12 +40,14 @@ public class CardDetailManager implements CardDetailService{
 	@Override
 	public Result add(CreateCardDetailRequest createCardDetailRequest) {
 		
+		System.out.println(createCardDetailRequest);
 		this.customerService.checkIfCustomerIdExist(createCardDetailRequest.getCustomerId());
 		checkIfCardDetailNotExist(createCardDetailRequest.getCardNo());
 		
 		CardDetail cardDetail = this.modelMapperService.forRequest().map(createCardDetailRequest, CardDetail.class);
 		
 		cardDetail.setCardDetailId(0);
+		cardDetail.setCustomer(this.customerService.getById(createCardDetailRequest.getCustomerId())); 
 		this.cardDetailDao.save(cardDetail);
 		
 		return new SuccessResult(Messages.CARD_ADDED);
@@ -55,7 +57,7 @@ public class CardDetailManager implements CardDetailService{
 
 	private void checkIfCardDetailNotExist(String cardNo) {
 		
-		if(!this.cardDetailDao.existsByCardNo(cardNo)) {
+		if(this.cardDetailDao.existsByCardNo(cardNo)) {
 			
 			throw new BusinessException(Messages.CARD_EXİST);
 		}
@@ -80,6 +82,8 @@ public class CardDetailManager implements CardDetailService{
 		checkIfCardByCardIdExist(updateCardDetailRequest.getCardDetailId());
 		
 		CardDetail cardDetail = this.modelMapperService.forRequest().map(updateCardDetailRequest, CardDetail.class);
+		cardDetail.setCustomer(this.customerService.getById(updateCardDetailRequest.getCustomerId()));
+		
 		this.cardDetailDao.save(cardDetail);
 		
 		return new SuccessResult(Messages.CARD_DETAILS_UPDATED);

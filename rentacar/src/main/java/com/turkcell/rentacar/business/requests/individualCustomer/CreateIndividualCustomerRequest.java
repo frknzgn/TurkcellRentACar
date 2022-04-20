@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class CreateIndividualCustomerRequest {
 	
 
-    private Long nationalityId;
+    private String nationalityId;
 	
 
     private String firstName;

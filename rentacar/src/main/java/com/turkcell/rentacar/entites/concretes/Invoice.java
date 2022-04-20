@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +30,8 @@ public class Invoice {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "invoice_id")
 	private int invoiceId;
-
+	
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	@Column(name = "creating_date")
 	private LocalDate creatingDate;
 	

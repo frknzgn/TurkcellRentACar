@@ -49,8 +49,10 @@ public class InvoiceManager implements InvoiceService {
 	    this.rentalService.checkIfRentalExists(createInvoiceRequest.getRentalId());
 	    
 	    Invoice response = this.modelMapperService.forRequest().map(createInvoiceRequest, Invoice.class);
-	
+	    
 	    response.setInvoiceId(0);
+	    response.setCustomer(this.customerService.getById(createInvoiceRequest.getCustomerId()));
+	    
 		this.invoiceDao.save(response);
 		
 		return new SuccessDataResult<Integer>(Messages.INVOICE_ADDED);

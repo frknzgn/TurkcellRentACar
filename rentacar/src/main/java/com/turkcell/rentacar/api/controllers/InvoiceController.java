@@ -3,13 +3,10 @@ package com.turkcell.rentacar.api.controllers;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,8 +22,6 @@ import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-
 @RestController
 @RequestMapping("/api/invoices")
 public class InvoiceController {
@@ -38,18 +33,18 @@ public class InvoiceController {
         this.invoiceService = invoiceService;
     }
 
-    @PostMapping("/add")
-    Result add(@RequestBody @Valid CreateInvoiceRequest createInvoiceRequest) throws BusinessException {
+    
+    Result add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException {
         return this.invoiceService.add(createInvoiceRequest);
     }
 
     @PutMapping("/update")
-    Result update(@RequestBody @Valid UpdateInvoiceRequest updateInvoiceRequest) throws BusinessException {
+    Result update(UpdateInvoiceRequest updateInvoiceRequest) throws BusinessException {
         return this.invoiceService.update(updateInvoiceRequest);
     }
 
     @DeleteMapping("/delete")
-    Result delete(@RequestBody DeleteInvoiceRequest deleteInvoiceRequest) throws BusinessException {
+    Result delete( DeleteInvoiceRequest deleteInvoiceRequest) throws BusinessException {
         return this.invoiceService.delete(deleteInvoiceRequest);
     }
 

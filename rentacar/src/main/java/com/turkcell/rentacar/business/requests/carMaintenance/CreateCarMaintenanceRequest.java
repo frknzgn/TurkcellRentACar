@@ -1,6 +1,7 @@
 package com.turkcell.rentacar.business.requests.carMaintenance;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -23,6 +24,6 @@ public class CreateCarMaintenanceRequest {
 	@Size(min=2,max=250)
 	private String description;
 	
-	private LocalDate maintenanceDropDate;
-	private LocalDate maintenanceReturnDate;
+	private Date maintenanceDropDate;
+	private Date maintenanceReturnDate;
 }

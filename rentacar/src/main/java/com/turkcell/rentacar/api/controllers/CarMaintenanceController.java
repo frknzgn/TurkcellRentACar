@@ -66,7 +66,7 @@ public class CarMaintenanceController {
 	
 	@PutMapping("/update")
 	public Result update(UpdateCarMaintenanceRequest updateCarMaintenanceRequest) {
-		
+		System.out.println(updateCarMaintenanceRequest);
 		return this.carMaintenanceService.update(updateCarMaintenanceRequest);
 	
 	}

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.AdditionalServiceService;
@@ -19,6 +20,7 @@ import com.turkcell.rentacar.business.abstracts.PosService;
 import com.turkcell.rentacar.business.abstracts.RentalService;
 import com.turkcell.rentacar.business.dtos.payment.GetPaymentDto;
 import com.turkcell.rentacar.business.dtos.payment.ListPaymentDto;
+import com.turkcell.rentacar.business.dtos.rental.GetRentalDto;
 import com.turkcell.rentacar.business.requests.cardDetail.CreateCardDetailForPaymentRequest;
 import com.turkcell.rentacar.business.requests.invoice.CreateInvoiceRequest;
 import com.turkcell.rentacar.business.requests.payment.CreateExtraPaymentRequest;
@@ -51,9 +53,9 @@ public class PaymentManager implements PaymentService {
     private CustomerService customerService;
 
     @Autowired
-    public PaymentManager(PaymentDao paymentDao, ModelMapperService modelMapperService,PosService posService, OrderedAdditionalServiceService orderedAdditionalServiceService,
-                          AdditionalServiceService additionalServiceService,CarService carService,InvoiceService invoiceService,RentalService rentalService,
-                          CustomerService customerService) {
+    public PaymentManager(PaymentDao paymentDao, ModelMapperService modelMapperService,@Lazy PosService posService,@Lazy OrderedAdditionalServiceService orderedAdditionalServiceService,
+                          @Lazy AdditionalServiceService additionalServiceService,@Lazy CarService carService,@Lazy InvoiceService invoiceService,@Lazy RentalService rentalService,
+                          @Lazy CustomerService customerService) {
     	
         this.paymentDao = paymentDao;
         this.modelMapperService = modelMapperService;
@@ -129,7 +131,7 @@ public class PaymentManager implements PaymentService {
     }
 
 
-    @Transactional
+    
     public Result extraDaysRentCarPayment(CreateExtraPaymentRequest createExtraPaymentRequest) throws BusinessException {
     	
         double totalFee = extraDaysPaymentTotalFeeCalculator(createExtraPaymentRequest);
@@ -166,14 +168,14 @@ public class PaymentManager implements PaymentService {
 
     private double totalFeeCalculator(CreatePaymentRequest createPaymentRequest) throws BusinessException {
     	
-        this.customerService.checkIfCustomerIdExist(createPaymentRequest.getRentalRequest().getCustomer_UserId());
-        this.carService.checkCarExist(createPaymentRequest.getRentalRequest().getCarId());
+        this.customerService.checkIfCustomerIdExist(this.rentalService.getById(createPaymentRequest.getRentalId()).getData().getCustomer_CustomerId());
+        this.carService.checkCarExist(this.rentalService.getById(createPaymentRequest.getRentalId()).getData().getCarId());
 
-        Rental rental = this.modelMapperService.forRequest().map(createPaymentRequest.getRentalRequest(), Rental.class);
+        Rental rental = this.modelMapperService.forRequest().map(this.rentalService.getById(createPaymentRequest.getRentalId()).getData(), Rental.class);
         
         double differentCityAndCarDailyPrice = this.rentalService.totalRentalDailyPriceAndDifferntCityCalculator(rental);
-        double additionalTotalFee = this.additionalServiceService.totalAdditionalServiceFeeCalculator(createPaymentRequest.getAdditionalServiceList());
-        return differentCityAndCarDailyPrice + additionalTotalFee;
+        //double additionalTotalFee = this.additionalServiceService.totalAdditionalServiceFeeCalculator(createPaymentRequest.getAdditionalServiceList());
+        return differentCityAndCarDailyPrice;// + additionalTotalFee;
     }
 
     private void checkIfPaymentDone(CreateCardDetailForPaymentRequest creditCard, double totalFee) throws BusinessException {
@@ -186,20 +188,26 @@ public class PaymentManager implements PaymentService {
         
     }
 
-    @Transactional
+   
     Integer PaymentSuccessor(CreatePaymentRequest createPaymentRequest, double totalFee) throws BusinessException {
     	
-        CreateCardDetailForPaymentRequest creditCard = createPaymentRequest.getCreateCardDetailForPaymentRequest();
+        CreateCardDetailForPaymentRequest creditCard = new CreateCardDetailForPaymentRequest();
+        creditCard.setCardCvv(createPaymentRequest.getCardCvv());
+        creditCard.setCardExpirationDate(createPaymentRequest.getCardExpirationDate());
+        creditCard.setCardHolder(createPaymentRequest.getCardHolder());
+        creditCard.setCardNo(createPaymentRequest.getCardNo());
+        
         checkIfPaymentDone(creditCard, totalFee);
-
-        Rental rental = this.modelMapperService.forRequest().map(createPaymentRequest.getRentalRequest(), Rental.class);
+        GetRentalDto getRentalDto = this.rentalService.getById(createPaymentRequest.getRentalId()).getData();
         
-        Integer createdRentalId = this.rentalService.addForIndividual(createPaymentRequest.getRentalRequest()).getData();
+        Rental rental = this.modelMapperService.forRequest().map(getRentalDto, Rental.class);
         
-        CreateInvoiceRequest createInvoiceRequest = new CreateInvoiceRequest(createdRentalId , rental.getCustomer().getUserId(),totalFee,LocalDate.now() );
+        //Integer createdRentalId = this.rentalService.addForIndividual(createPaymentRequest.getRentalRequest()).getData();
+        
+        CreateInvoiceRequest createInvoiceRequest = new CreateInvoiceRequest(rental.getRentalId() , rental.getCustomer().getUserId(),totalFee,LocalDate.now() );
         Integer invoiceId = this.invoiceService.add(createInvoiceRequest).getData();
         
-        this.orderedAdditionalServiceService.addAdditionals(createdRentalId, createPaymentRequest.getAdditionalServiceList());
+        //this.orderedAdditionalServiceService.addAdditionals(rental.getRentalId(), createPaymentRequest.getAdditionalServiceList());
         	
         return invoiceId;
     }

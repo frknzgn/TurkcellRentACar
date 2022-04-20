@@ -15,7 +15,7 @@ public class UpdateIndividualCustomerRequest {
 	private int customerId;
 	
 	
-    private Integer nationalityId;
+    private String nationalityId;
 	
     @NotNull
     private String firstName;

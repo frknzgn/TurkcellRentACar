@@ -17,7 +17,7 @@ public class GetInvoiceDto {
 	
     private double totalPrice;
     
-    private int customer_CustomerId;
+    private int customerCustomerId;
     private int rental_RentalId;
     private LocalDate rental_RentalDateOfIssue;
     private LocalDate rental_RentalDateOfReceipt;

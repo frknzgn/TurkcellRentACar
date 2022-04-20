@@ -5,15 +5,13 @@ import java.time.LocalDate;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
-@Getter
-@Setter
-@ToString
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateInvoiceRequest {
@@ -31,7 +29,7 @@ public class UpdateInvoiceRequest {
 	@Min(0)
 	private double totalPrice;
 	
-	@NotNull
+	@DateTimeFormat(pattern = "dd.MM.yyyy")
 	private LocalDate creatingDate;
 	
 }
