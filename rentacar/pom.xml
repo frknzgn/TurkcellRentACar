@@ -78,7 +78,7 @@
                 <includes>
                     <include>${basedir}/${full-artifact-name}</include>
                 </includes>
-                <jdkVersion>11.0.15</jdkVersion>
+                <jdkVersion>1.8</jdkVersion>
                 <processTypes>
                     <web>java $JAVA_OPTS -Dserver.port=$PORT -jar target/trkcllrentacar.jar
                         -Dspring.profiles.active=test
